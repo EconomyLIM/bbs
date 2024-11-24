@@ -19,8 +19,7 @@ class MemberRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(value = false)
-    void 회원가입에_성공해야한다(){
+    void 회원가입에_성공해야한다 (){
         Member member = Member.builder()
                 .username("test1")
                 .password("testPassword")
@@ -28,6 +27,17 @@ class MemberRepositoryTest {
                 .build();
         memberRepository.save(member);
 
+        Assertions.assertThat(memberRepository.findById(member.getId())).isEqualTo(member);
+    }
+
+    @Test
+    void 회원조회에_성공해야한다 (){
+        Member member = Member.builder()
+                .username("test1")
+                .password("testPassword")
+                .email("test123@test.com")
+                .build();
+        memberRepository.save(member);
         Assertions.assertThat(memberRepository.findById(member.getId())).isEqualTo(member);
     }
 
