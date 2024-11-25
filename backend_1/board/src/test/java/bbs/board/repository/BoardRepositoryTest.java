@@ -71,7 +71,7 @@ class BoardRepositoryTest {
                 .build();
         boardRepository.update(boardDTO);
 
-        Board findBoard = boardRepository.findById(boardDTO);
+        Board findBoard = boardRepository.findById(boardDTO.getId());
         Assertions.assertThat(findBoard.getTitle()).isEqualTo(boardDTO.getTitle());
 
     }

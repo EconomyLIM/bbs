@@ -29,8 +29,8 @@ public class BoardRepository {
         return board.getId();
     }
 
-    public Board findById(BoardDTO boardDTO){
-        return em.find(Board.class, boardDTO.getId());
+    public Board findById(Long boardId){
+        return em.find(Board.class, boardId);
     }
 
     public List<Board> findAll (){
