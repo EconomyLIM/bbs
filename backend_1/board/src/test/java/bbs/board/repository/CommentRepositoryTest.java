@@ -1,8 +1,8 @@
 package bbs.board.repository;
 
-import bbs.board.entity.Board;
-import bbs.board.entity.Comment;
-import bbs.board.entity.Member;
+import bbs.board.domain.Board;
+import bbs.board.domain.Comment;
+import bbs.board.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

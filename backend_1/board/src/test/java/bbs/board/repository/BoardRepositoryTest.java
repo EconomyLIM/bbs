@@ -1,7 +1,7 @@
 package bbs.board.repository;
 
-import bbs.board.entity.Board;
-import bbs.board.entity.Member;
+import bbs.board.domain.Board;
+import bbs.board.domain.Member;
 import bbs.board.dto.BoardDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

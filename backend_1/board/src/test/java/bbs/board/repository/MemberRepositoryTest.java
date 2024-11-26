@@ -1,6 +1,6 @@
 package bbs.board.repository;
 
-import bbs.board.entity.Member;
+import bbs.board.domain.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

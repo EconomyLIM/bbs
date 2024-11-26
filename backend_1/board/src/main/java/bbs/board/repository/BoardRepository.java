@@ -1,6 +1,6 @@
 package bbs.board.repository;
 
-import bbs.board.entity.Board;
+import bbs.board.domain.Board;
 import bbs.board.dto.BoardDTO;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

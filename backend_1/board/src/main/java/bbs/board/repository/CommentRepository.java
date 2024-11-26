@@ -1,7 +1,7 @@
 package bbs.board.repository;
 
-import bbs.board.entity.Board;
-import bbs.board.entity.Comment;
+import bbs.board.domain.Board;
+import bbs.board.domain.Comment;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
