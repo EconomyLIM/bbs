@@ -1,7 +1,7 @@
 package bbs.board.repository;
 
-import bbs.board.dao.Board;
-import bbs.board.dao.Member;
+import bbs.board.entity.Board;
+import bbs.board.entity.Member;
 import bbs.board.dto.BoardDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class BoardRepositoryTest {

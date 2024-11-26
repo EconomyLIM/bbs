@@ -1,7 +1,7 @@
 package bbs.board.repository;
 
-import bbs.board.dao.Board;
-import bbs.board.dao.Comment;
+import bbs.board.entity.Board;
+import bbs.board.entity.Comment;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

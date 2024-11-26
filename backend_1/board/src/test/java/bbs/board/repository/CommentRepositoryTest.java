@@ -1,9 +1,8 @@
 package bbs.board.repository;
 
-import bbs.board.dao.Board;
-import bbs.board.dao.Comment;
-import bbs.board.dao.Member;
-import org.assertj.core.api.Assertions;
+import bbs.board.entity.Board;
+import bbs.board.entity.Comment;
+import bbs.board.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

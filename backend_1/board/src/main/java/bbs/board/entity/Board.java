@@ -1,4 +1,4 @@
-package bbs.board.dao;
+package bbs.board.entity;
 
 import bbs.board.dto.BoardDTO;
 import jakarta.persistence.*;

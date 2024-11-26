@@ -1,6 +1,5 @@
-package bbs.board.dao;
+package bbs.board.entity;
 
-import bbs.board.repository.BoardRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

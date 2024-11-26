@@ -1,6 +1,6 @@
 package bbs.board.repository;
 
-import bbs.board.dao.Member;
+import bbs.board.entity.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
