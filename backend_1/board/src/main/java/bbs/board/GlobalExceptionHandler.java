@@ -6,6 +6,7 @@ import bbs.board.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,14 +21,26 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(exception = CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(final CustomException e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(exception = MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(final MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
+        StringBuilder errorMessages = new StringBuilder();
+        e.getBindingResult().getAllErrors().forEach(error -> errorMessages.append(error.getDefaultMessage()));
+
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(errorCode, errorMessages.toString());
+
         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
 
     @ExceptionHandler(exception = RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         ErrorCode errorCode = ErrorCode.BAD_REQUEST;
         ErrorResponse errorResponse = new ErrorResponse(errorCode);
         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
@@ -35,7 +48,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(exception = Exception.class)
     public ResponseEntity<ErrorResponse> handleException(final Exception e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         ErrorCode errorCode = ErrorCode.INTERNAL_ERROR;
         ErrorResponse errorResponse = new ErrorResponse(errorCode);
         return new ResponseEntity<>(errorResponse, HttpStatus.OK);

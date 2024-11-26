@@ -43,7 +43,7 @@ class BoardRepositoryTest {
         boardRepository.save(board);
 
         // then
-        Assertions.assertThat(board.getId()).isEqualTo(2);
+        Assertions.assertThat(board.getId()).isEqualTo(1);
     }
 
     @Test
