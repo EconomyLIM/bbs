@@ -24,8 +24,8 @@ public class MemberRepository {
     }
 
     public Member login (LoginDTO loginDTO){
-        return em.createQuery("select m from Member m where m.username=:username and m.password=:password", Member.class)
-                .setParameter("username", loginDTO.getEmail())
+        return em.createQuery("select m from Member m where m.email=:email and m.password=:password", Member.class)
+                .setParameter("email", loginDTO.getEmail())
                 .setParameter("password", loginDTO.getPassword()).getResultList().stream().findFirst().orElse(null);
     }
 

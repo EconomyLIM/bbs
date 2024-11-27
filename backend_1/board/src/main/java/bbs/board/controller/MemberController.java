@@ -1,7 +1,10 @@
 package bbs.board.controller;
 
+import bbs.board.domain.Member;
+import bbs.board.dto.LoginDTO;
 import bbs.board.dto.MemberDTO;
 import bbs.board.dto.ResponseDTO;
+import bbs.board.dto.response.LoginResponseDTO;
 import bbs.board.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,11 @@ public class MemberController {
         return ResponseEntity.ok(new ResponseDTO("200", "OK"));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO){
+        Member loginedMember = loginService.login(loginDTO);
+        return ResponseEntity.ok(new LoginResponseDTO(loginedMember));
+    }
 
 
 }

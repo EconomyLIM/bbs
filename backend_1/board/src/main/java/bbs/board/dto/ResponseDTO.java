@@ -9,10 +9,19 @@ import lombok.NoArgsConstructor;
  * created by     : 임경재
  * description    :
  */
-@NoArgsConstructor @AllArgsConstructor
 @Builder
 public class ResponseDTO {
 
     public String code;
     public String message;
+
+    public ResponseDTO() {
+        this.code = "200";
+        this.message = "OK";
+    }
+
+    public ResponseDTO(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }
