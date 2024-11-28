@@ -37,7 +37,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRuntimeException(final MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
-
         List<Map<String, String>> errorList = new ArrayList<>();
 
         for (ObjectError allError : allErrors) {
@@ -51,9 +50,9 @@ public class GlobalExceptionHandler {
                 errorDetails.put("object", allError.getObjectName());
                 errorDetails.put("message", allError.getDefaultMessage());
             }
+
             errorList.add(errorDetails);
         }
-
         ErrorCode errorCode = ErrorCode.BAD_REQUEST;
         ErrorResponse errorResponse = new ErrorResponse(errorCode, errorList);
 

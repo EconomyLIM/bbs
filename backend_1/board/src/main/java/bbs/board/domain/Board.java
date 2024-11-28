@@ -18,7 +18,7 @@ import java.util.List;
         sequenceName = "Board_SEQ",
         allocationSize = 1
 )
-public class Board {
+public class Board extends BaseEntity {
 
     @Id
     @Column(name = "board_id")
@@ -26,20 +26,24 @@ public class Board {
     private Long id;
     private String title;
     private String content;
-    private LocalDateTime registerDate;
-    private LocalDateTime updateDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "board")
+    private List<Keyword> keywords = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public void update (BoardDTO boardDTO){
-        this.title = boardDTO.getTitle();
-        this.content = boardDTO.getContent();
-        this.updateDate = boardDTO.getUpdateDate();
+        title = boardDTO.getTitle();
+        content = boardDTO.getContent();
     }
 
     public void addComment(Comment comment){
