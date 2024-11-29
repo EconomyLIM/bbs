@@ -1,8 +1,6 @@
-package bbs.board.dto;
+package bbs.board.dto.common;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 /**
  * date           : 2024-11-26
@@ -12,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseDTO {
 
-    public String code;
-    public String message;
+    private String code;
+    private String message;
+
 
     public ResponseDTO() {
         this.code = "200";

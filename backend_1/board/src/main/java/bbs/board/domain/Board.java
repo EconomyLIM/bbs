@@ -1,13 +1,16 @@
 package bbs.board.domain;
 
 import bbs.board.dto.BoardDTO;
+import bbs.board.dto.common.BoardRecommendationType;
+import bbs.board.dto.request.BoardLikedDTO;
+import bbs.board.dto.request.BoardRegisterRequestDTO;
+import bbs.board.dto.request.BoardUpdateRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +28,16 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq_generator")
     private Long id;
     private String title;
+
+    @Lob
     private String content;
+    private int likedCnt;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Keyword> keywords = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,9 +47,24 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public void update (BoardDTO boardDTO){
-        title = boardDTO.getTitle();
-        content = boardDTO.getContent();
+    public void update (BoardUpdateRequestDTO boardUpdateRequestDTO){
+        title = boardUpdateRequestDTO.getTitle();
+        content = boardUpdateRequestDTO.getContent();
+        keywords.clear();
+        if (boardUpdateRequestDTO.getKeywords() != null && !boardUpdateRequestDTO.getKeywords().isEmpty()){
+            keywords.addAll(boardUpdateRequestDTO.getKeywords());
+        }
+        category = boardUpdateRequestDTO.getCategory();
+    }
+
+    public void updatedLiked(BoardLikedDTO boardLikedDTO){
+        BoardRecommendationType recommendationType = boardLikedDTO.getRecommendationType();
+        if (recommendationType == BoardRecommendationType.LIKE){
+            likedCnt += 1;
+        }else{
+            likedCnt -= 1;
+        }
+
     }
 
     public void addComment(Comment comment){
@@ -51,5 +72,18 @@ public class Board extends BaseEntity {
         comment.setBoard(this);
     }
 
-
+    public Board(BoardRegisterRequestDTO boardRequestDTO) {
+        this.title = boardRequestDTO.getTitle();
+        this.content = boardRequestDTO.getContent();
+        List<Keyword> keywords1 = boardRequestDTO.getKeywords();
+        if (keywords1 != null && !keywords1.isEmpty()){
+            for (Keyword keyword : keywords1) {
+                keyword.setBoard(this);
+            }
+        }
+        this.keywords = keywords1;
+        this.category = boardRequestDTO.getCategory();
+        this.member = boardRequestDTO.getMember();
+        this.likedCnt = 0;
+    }
 }

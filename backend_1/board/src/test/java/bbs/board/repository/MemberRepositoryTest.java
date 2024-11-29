@@ -1,17 +1,24 @@
 package bbs.board.repository;
 
 import bbs.board.domain.Member;
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @SpringBootTest
 class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    EntityManager em;
 
 
     @Test
@@ -36,6 +43,23 @@ class MemberRepositoryTest {
                 .build();
         memberRepository.save(member);
         Assertions.assertThat(memberRepository.findById(member.getId())).isEqualTo(member);
+    }
+
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void searchMemberByEmail() throws Exception{
+        // given
+        Member member = new Member("testMember1");
+        memberRepository.save(member);
+        // when
+        em.flush();
+        em.clear();
+        Member findMember = memberRepository.findByEmail(member.getEmail()).orElse(null);
+
+
+        // then
+        Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
     }
 
 }

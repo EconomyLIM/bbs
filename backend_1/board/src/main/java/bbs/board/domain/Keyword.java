@@ -1,6 +1,7 @@
 package bbs.board.domain;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 
 /**
  * date           : 2024-11-28
@@ -16,7 +17,15 @@ public class Keyword {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
+    @Setter
     private Board board;
 
     private String keywordName;
+
+    public Keyword() {
+    }
+
+    public Keyword(String keywordName) {
+        this.keywordName = keywordName;
+    }
 }

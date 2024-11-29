@@ -1,7 +1,7 @@
 package bbs.board.dto.response;
 
 import bbs.board.domain.Member;
-import bbs.board.dto.ResponseDTO;
+import bbs.board.dto.common.ResponseDTO;
 import lombok.Getter;
 
 /**

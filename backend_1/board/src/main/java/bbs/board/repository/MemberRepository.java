@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,6 +29,12 @@ public class MemberRepository {
         return em.createQuery("select m from Member m where m.email=:email and m.password=:password", Member.class)
                 .setParameter("email", loginDTO.getEmail())
                 .setParameter("password", loginDTO.getPassword()).getResultList().stream().findFirst().orElse(null);
+    }
+
+    public Optional<Member> findByEmail(String email){
+        return em.createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList().stream().findFirst();
     }
 
 }
