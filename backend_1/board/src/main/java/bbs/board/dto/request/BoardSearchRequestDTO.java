@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
  */
 @Data @NoArgsConstructor @AllArgsConstructor
 public class BoardSearchRequestDTO {
-    public int page;
+    private int page;
 
-    public String memberId;
-    public String searchKeyword;
+    private String memberId;
+    private String title;
+    private String searchWord;
+    private String searchKeyword;
 }

@@ -47,7 +47,7 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public void update (BoardUpdateRequestDTO boardUpdateRequestDTO){
+    public void  update (BoardUpdateRequestDTO boardUpdateRequestDTO){
         title = boardUpdateRequestDTO.getTitle();
         content = boardUpdateRequestDTO.getContent();
         keywords.clear();

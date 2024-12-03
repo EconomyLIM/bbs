@@ -3,8 +3,10 @@ package bbs.board.dto.response;
 import bbs.board.domain.Board;
 import bbs.board.domain.Category;
 import bbs.board.domain.Member;
+import bbs.board.dto.common.ResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,8 +14,9 @@ import lombok.NoArgsConstructor;
  * created by     : 임경재
  * description    :
  */
-@Data @NoArgsConstructor @AllArgsConstructor
-public class BoardResponseDTO {
+@Getter
+@NoArgsConstructor @AllArgsConstructor
+public class BoardResponseDTO{
     private Long id;
     private String title;
     private String content;

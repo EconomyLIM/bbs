@@ -33,7 +33,7 @@ public class Member {
 
     // just test constructor
     public Member(String email) {
-        this.email = email;
+        this(email, "testPassword", "testUsername", "testNickname");
     }
 
     public Member(String email, String password, String username, String nickname) {

@@ -6,6 +6,7 @@ import bbs.board.dto.MemberDTO;
 import bbs.board.dto.common.ResponseDTO;
 import bbs.board.dto.response.LoginResponseDTO;
 import bbs.board.service.LoginService;
+import bbs.board.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MemberController {
     private final LoginService loginService;
+    private final MemberService memberService;
 
     @PostMapping("/member/add")
     public ResponseEntity<ResponseDTO> addMember(@Valid @RequestBody MemberDTO memberDTO){
         loginService.saveMember(memberDTO);
-        return ResponseEntity.ok(new ResponseDTO("200", "OK"));
+        return ResponseEntity.ok(new ResponseDTO("OK", null));
     }
 
     @PostMapping("/login")

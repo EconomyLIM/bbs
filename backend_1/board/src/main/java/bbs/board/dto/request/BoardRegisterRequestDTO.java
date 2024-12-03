@@ -23,4 +23,9 @@ public class BoardRegisterRequestDTO {
     private Member member;
     private List<Keyword> keywords;
     private Category category;
+
+    public BoardRegisterRequestDTO(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

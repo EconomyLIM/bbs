@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data @NoArgsConstructor @AllArgsConstructor
 public class BoardLikedDTO {
+
     private Long memberId;
     private String email;
     private Long boardId;

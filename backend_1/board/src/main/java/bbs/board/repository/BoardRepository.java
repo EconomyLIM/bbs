@@ -10,5 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
 }

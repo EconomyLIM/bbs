@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class BoardUpdateRequestDTO {
 
+    private Long boardId;
     private String title;
     private String content;
     private List<Keyword> keywords;

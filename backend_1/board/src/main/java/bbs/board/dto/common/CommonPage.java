@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 public enum CommonPage {
-    BoardPage(20)
+    BOARD_PAGE_SIZE(20)
     ;
 
     int pageSize;
