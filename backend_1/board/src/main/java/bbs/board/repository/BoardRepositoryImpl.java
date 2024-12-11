@@ -1,7 +1,7 @@
 package bbs.board.repository;
 
 import bbs.board.domain.Board;
-import bbs.board.dto.common.CommonPage;
+import bbs.board.dto.common.CommonPageSizes;
 import bbs.board.dto.request.BoardSearchRequestDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -30,7 +30,7 @@ public class BoardRepositoryImpl implements BoardCustomRepository{
                 .from(board)
                 .where(allSearch(dto))
                 .offset(dto.getPage())
-                .limit(CommonPage.BOARD_PAGE_SIZE.getPageSize())
+                .limit(CommonPageSizes.BOARD_PAGE_SIZE.getPageSize())
                 .fetch();
     }
 

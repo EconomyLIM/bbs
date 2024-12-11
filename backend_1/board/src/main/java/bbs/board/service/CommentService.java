@@ -1,0 +1,54 @@
+package bbs.board.service;
+
+import bbs.board.domain.Board;
+import bbs.board.domain.Comment;
+import bbs.board.domain.Member;
+import bbs.board.dto.common.BasicResponse;
+import bbs.board.dto.request.FindCommentByBoardRequest;
+import bbs.board.dto.request.SaveCommentRequest;
+import bbs.board.dto.response.FindCommentByBoardBasicResponse;
+import bbs.board.exception.CustomException;
+import bbs.board.exception.ErrorCode;
+import bbs.board.repository.BoardRepository;
+import bbs.board.repository.CommentRepository;
+import bbs.board.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * date           : 2024-12-11
+ * created by     : 임경재
+ * description    :
+ */
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class CommentService {
+    private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+
+    @Transactional
+    public BasicResponse save(SaveCommentRequest request) {
+        Member findMember = memberRepository.findByEmail(request.getMemberEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        Board findBoard = boardRepository.findById(request.getBoardId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        Comment comment = new Comment(findMember, findBoard, request);
+
+        commentRepository.save(comment);
+        request.setCommentId(comment.getId());
+        return BasicResponse.of();
+    }
+
+    @Transactional
+    public FindCommentByBoardBasicResponse findByBoard(FindCommentByBoardRequest request) {
+        Board findBoard = boardRepository.findById(request.getBoardId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+        return FindCommentByBoardBasicResponse.of(commentRepository.findByBoard(findBoard));
+    }
+}

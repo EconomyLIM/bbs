@@ -3,10 +3,11 @@ package bbs.board.controller;
 import bbs.board.domain.Member;
 import bbs.board.dto.LoginDTO;
 import bbs.board.dto.MemberDTO;
-import bbs.board.dto.common.ResponseDTO;
-import bbs.board.dto.response.LoginResponseDTO;
+import bbs.board.dto.common.BasicResponse;
+import bbs.board.dto.response.LoginBasicResponse;
 import bbs.board.service.LoginService;
 import bbs.board.service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,20 +24,31 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "예제 API", description = "Swagger 테스트용 API")
 public class MemberController {
     private final LoginService loginService;
     private final MemberService memberService;
 
     @PostMapping("/member/add")
-    public ResponseEntity<ResponseDTO> addMember(@Valid @RequestBody MemberDTO memberDTO){
+    public ResponseEntity<BasicResponse> addMember(@Valid @RequestBody MemberDTO memberDTO){
         loginService.saveMember(memberDTO);
-        return ResponseEntity.ok(new ResponseDTO("OK", null));
+        return ResponseEntity.ok(new BasicResponse("OK", null));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO){
+    public ResponseEntity<LoginBasicResponse> login(@Valid @RequestBody LoginDTO loginDTO){
         Member loginedMember = loginService.login(loginDTO);
-        return ResponseEntity.ok(new LoginResponseDTO(loginedMember));
+        return ResponseEntity.ok(new LoginBasicResponse(loginedMember));
+    }
+
+//    @EventListener(ApplicationReadyEvent.class)
+    public void initMember(){
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setEmail("test@test.com");
+        memberDTO.setPassword("123456");
+        memberDTO.setNickname("test");
+        memberDTO.setUsername("test");
+        loginService.saveMember(memberDTO);
     }
 
 

@@ -1,0 +1,19 @@
+package bbs.board.dto.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * date           : 2024-12-11
+ * created by     : 임경재
+ * description    :
+ */
+@Data @NoArgsConstructor @AllArgsConstructor
+public class SaveCommentRequest {
+    private Long boardId;
+    private String memberEmail;
+    private Long commentId;
+    private SaveCommentRequest parentComment;
+    private String commentContent;
+}

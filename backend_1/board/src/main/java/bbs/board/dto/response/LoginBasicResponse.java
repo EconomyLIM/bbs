@@ -1,7 +1,7 @@
 package bbs.board.dto.response;
 
 import bbs.board.domain.Member;
-import bbs.board.dto.common.ResponseDTO;
+import bbs.board.dto.common.BasicResponse;
 import lombok.Getter;
 
 /**
@@ -10,13 +10,13 @@ import lombok.Getter;
  * description    :
  */
 @Getter
-public class LoginResponseDTO extends ResponseDTO {
+public class LoginBasicResponse extends BasicResponse {
     private Member member;
 
-    public LoginResponseDTO() {
+    public LoginBasicResponse() {
     }
 
-    public LoginResponseDTO(Member member) {
+    public LoginBasicResponse(Member member) {
         this.member = member;
     }
 }

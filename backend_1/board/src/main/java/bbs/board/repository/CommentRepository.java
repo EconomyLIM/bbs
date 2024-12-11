@@ -18,6 +18,12 @@ public class CommentRepository {
         em.persist(comment);
     }
 
+    public List<Comment> findByBoard (Board board){
+        return em.createQuery("select c from Comment c where c.board = :board", Comment.class)
+                .setParameter("board", board)
+                .getResultList();
+    }
+
     public List<Comment> getCommentsInBoard(Board board){
 //        return em.createQuery("select c from Comment c where c.board = :board", Comment.class)
 //                .setParameter("board", board).getResultList();
@@ -25,8 +31,7 @@ public class CommentRepository {
         return em.createQuery(
                         "select c from Comment c " +
                                 "left join fetch c.replies " +
-                                "where c.board = :board and c.parentComment is null " +
-                                "order by c.registerDate", Comment.class)
+                                "where c.board = :board and c.parentComment is null " , Comment.class)
                 .setParameter("board", board)
                 .getResultList();
     }

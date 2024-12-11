@@ -1,5 +1,6 @@
 package bbs.board.domain;
 
+import bbs.board.dto.request.SaveCommentRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder @NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 @SequenceGenerator(
         name = "comment_seq_generator",    // 식별자 생성기의 이름
         sequenceName = "Comment_SEQ", // Oracle에 존재하는 시퀀스 이름
@@ -19,24 +20,22 @@ import java.util.List;
 )
 @Table(name = "comments")
 @Getter
-public class Comment {
+public class Comment extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq_generator")
     @Column(name = "comment_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(nullable = false)
     private String commentContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BOARD_ID")
+    @JoinColumn(name = "BOARD_ID", nullable = false)
     private Board board;
-
-    private LocalDateTime registerDate;
-    private LocalDateTime updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
@@ -47,13 +46,23 @@ public class Comment {
     @Getter
     private List<Comment> replies = new ArrayList<>();
 
+    public Comment(final SaveCommentRequest request) {
+        this.id = request.getCommentId();
+        this.commentContent = request.getCommentContent();
+    }
+
+    public Comment(final Member findMember, final Board findBoard, final SaveCommentRequest request) {
+        this.member = findMember;
+        this.board = findBoard;
+        if (request.getParentComment() != null && request.getParentComment().getCommentId() != null) {
+            this.parentComment = new Comment(request.getParentComment());
+        }
+        this.commentContent = request.getCommentContent();
+    }
+
     public void setBoard(Board board){
         this.board = board;
         board.getComments().add(this);
-    }
-
-    public void addChildComment(Comment comment){
-        replies.add(comment);
     }
 
     @Override

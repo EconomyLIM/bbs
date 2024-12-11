@@ -38,4 +38,8 @@ public class MemberRepository {
                 .getResultList().stream().findFirst();
     }
 
+    public void deleteAll(){
+        em.createQuery("delete from Member").executeUpdate();
+    }
+
 }

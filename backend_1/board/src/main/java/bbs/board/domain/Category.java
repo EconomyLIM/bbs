@@ -33,8 +33,8 @@ public class Category {
     @JoinColumn(name = "parent_category_id")
     private Category parent;
 
+    //    @BatchSize(size = 15)
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @BatchSize(size = 15)
     private List<Category> subCategories = new ArrayList<>();
 
     public void addParentCategoryInChild (Category category) {

@@ -38,7 +38,7 @@ public class CategoryController {
         return all;
     }
 
-    @EventListener(ApplicationReadyEvent.class)
+//    @EventListener(ApplicationReadyEvent.class)
 //    @PostConstruct
     public void init(){
         Category topCategory1 = new Category("TopDepth1", 1);

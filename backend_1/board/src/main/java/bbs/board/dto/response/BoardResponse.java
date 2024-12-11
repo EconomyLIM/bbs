@@ -1,11 +1,7 @@
 package bbs.board.dto.response;
 
 import bbs.board.domain.Board;
-import bbs.board.domain.Category;
-import bbs.board.domain.Member;
-import bbs.board.dto.common.ResponseDTO;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,20 +12,20 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor @AllArgsConstructor
-public class BoardResponseDTO{
+public class BoardResponse {
     private Long id;
     private String title;
     private String content;
     private int likedCnt;
-    private Member member;
-    private Category category;
+    private String memberEmail;
+//    private Category category;
 
-    public BoardResponseDTO(Board board) {
+    public BoardResponse(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.likedCnt = board.getLikedCnt();
-        this.member = board.getMember();
-        this.category = board.getCategory();
+        this.memberEmail = board.getMember().getEmail();
+//        this.category = board.getCategory();
     }
 }

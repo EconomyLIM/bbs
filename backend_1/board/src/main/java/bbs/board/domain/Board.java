@@ -33,7 +33,7 @@ public class Board extends BaseEntity {
     private String content;
     private int likedCnt;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -72,18 +72,24 @@ public class Board extends BaseEntity {
         comment.setBoard(this);
     }
 
-    public Board(BoardRegisterRequestDTO boardRequestDTO) {
+    public Board(BoardRegisterRequestDTO boardRequestDTO, Member member) {
         this.title = boardRequestDTO.getTitle();
         this.content = boardRequestDTO.getContent();
-        List<Keyword> keywords1 = boardRequestDTO.getKeywords();
-        if (keywords1 != null && !keywords1.isEmpty()){
-            for (Keyword keyword : keywords1) {
+        List<Keyword> keywords = boardRequestDTO.getKeywords();
+        if (keywords != null && !keywords.isEmpty()){
+            for (Keyword keyword : keywords) {
                 keyword.setBoard(this);
             }
         }
-        this.keywords = keywords1;
+        this.keywords = keywords;
+        this.member = member;
         this.category = boardRequestDTO.getCategory();
-        this.member = boardRequestDTO.getMember();
         this.likedCnt = 0;
+    }
+
+    public Board(String title, String content, Member member) {
+        this.title = title;
+        this.content = content;
+        this.member = member;
     }
 }

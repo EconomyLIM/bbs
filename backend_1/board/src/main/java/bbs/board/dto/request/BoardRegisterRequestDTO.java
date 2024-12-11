@@ -20,12 +20,18 @@ public class BoardRegisterRequestDTO {
 
     private String title;
     private String content;
-    private Member member;
+    private String memberEmail;
     private List<Keyword> keywords;
     private Category category;
 
     public BoardRegisterRequestDTO(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public BoardRegisterRequestDTO(final String title, final String content, final String memberEmail) {
+        this.title = title;
+        this.content = content;
+        this.memberEmail = memberEmail;
     }
 }

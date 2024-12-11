@@ -4,9 +4,8 @@ export default async function Home() {
 
   return (
     <>
-        <Home></Home>
+        홈페이지 입니다.
 
-        123
     </>
   )
 }

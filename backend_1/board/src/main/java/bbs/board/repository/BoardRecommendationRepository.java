@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface BoardRecommendationRepository extends JpaRepository<BoardRecommendation, Long> {
 
-    @Query("select b from BoardRecommendation b where b.board.id = :boardId and b.member.id = :memberId")
-    BoardRecommendation findByEmailAndBoard(Long memberId, Long boardId);
+    @Query("select b from BoardRecommendation b where b.board.id = :boardId and b.member.email = :email")
+    BoardRecommendation findByEmailAndBoard(String email, Long boardId);
 }

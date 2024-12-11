@@ -1,6 +1,5 @@
 package bbs.board.dto.common;
 
-import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -8,20 +7,23 @@ import lombok.Getter;
  * created by     : 임경재
  * description    :
  */
-@Builder
 @Getter
-public class ResponseDTO {
+public class BasicResponse {
 
     private String code;
     private String message;
 
-    public ResponseDTO() {
+    public BasicResponse() {
         this.code = "OK";
         this.message = null;
     }
 
-    public ResponseDTO(String code, String message) {
+    public BasicResponse(String code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public static BasicResponse of (){
+        return new BasicResponse();
     }
 }

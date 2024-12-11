@@ -3,6 +3,7 @@ package bbs.board.domain;
 import bbs.board.dto.MemberDTO;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
+import bbs.board.security.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,9 @@ public class Member {
     private String username;
     private String nickname;
     private Integer point;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // just test constructor
     public Member(String email) {
@@ -62,4 +66,6 @@ public class Member {
             throw new CustomException(ErrorCode.ID_PASSWORD_NOT_NULL);
         }
     }
+
+
 }

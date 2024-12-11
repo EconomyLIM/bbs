@@ -19,6 +19,8 @@ export const requestBackend = async (
         // 전체 URL 생성
         const fullUrl = `${baseUrl}${endpoint}`;
 
+        console.log("fullUrl = ", fullUrl);
+
         // axios 설정 생성
         const axiosConfig = method === 'GET'
             ? {params: paramsOrData, ...config}

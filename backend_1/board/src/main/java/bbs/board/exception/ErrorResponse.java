@@ -15,18 +15,21 @@ import java.util.Map;
 public class ErrorResponse {
 
     private final LocalDateTime timestamp = LocalDateTime.now();
-    private ErrorCode code;
+    private String code;
+    private String message;
     private List<Map<String, String>> fieldError;
 
     public ErrorResponse() {
     }
 
     public ErrorResponse(ErrorCode errorCode) {
-        this.code = errorCode;
+        this.code = "BAD";
+        this.message = errorCode.getErrorMessage();
     }
 
     public ErrorResponse(ErrorCode errorCode, List<Map<String, String>> fieldError) {
-        this.code = errorCode;
+        this.code = "BAD";
+        this.message = errorCode.getErrorMessage();
         this.fieldError = fieldError;
     }
 }

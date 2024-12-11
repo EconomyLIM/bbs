@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class BoardLikedDTO {
 
     private Long memberId;
-    private String email;
+    private String memberEmail;
     private Long boardId;
     private BoardRecommendationType recommendationType;
 }

@@ -8,16 +8,17 @@ import lombok.Getter;
  * description    :
  */
 @Getter
-public enum CommonPage {
+public enum CommonPageSizes {
     BOARD_PAGE_SIZE(20)
+    , COMMENT_PAGE_SIZE(30)
     ;
 
     int pageSize;
 
-    CommonPage() {
+    CommonPageSizes() {
     }
 
-    CommonPage(int pageSize) {
+    CommonPageSizes(int pageSize) {
         this.pageSize = pageSize;
     }
 }

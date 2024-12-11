@@ -3,6 +3,7 @@ import {requestBackend} from "../../../lib/requestBackend";
 
 export async function POST(request: Request) {
     try {
+        console.log("들어옴");
         const requestBody = await request.json();
         if(!requestBody.method || !requestBody.url || !requestBody.body){
             return NextResponse.json({ error: 'method or url or body is null' }, { status: 500 });
