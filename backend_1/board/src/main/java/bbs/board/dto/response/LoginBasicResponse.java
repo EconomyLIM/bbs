@@ -1,8 +1,11 @@
 package bbs.board.dto.response;
 
+import bbs.board.auth.entity.RefreshToken;
 import bbs.board.domain.Member;
+import bbs.board.dto.MemberDTO;
 import bbs.board.dto.common.BasicResponse;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * date           : 2024-11-26
@@ -11,12 +14,21 @@ import lombok.Getter;
  */
 @Getter
 public class LoginBasicResponse extends BasicResponse {
-    private Member member;
+    private MemberDTO memberdto;
+    private String accessToken;
+    @Setter
+    private RefreshToken refreshToken;
 
-    public LoginBasicResponse() {
+    private LoginBasicResponse() {
     }
 
-    public LoginBasicResponse(Member member) {
-        this.member = member;
+    public LoginBasicResponse(final Member member, final String accessToken, final RefreshToken refreshToken) {
+        this.memberdto = new MemberDTO(member);
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
+    public static LoginBasicResponse of(final Member member, final String accessToken, final RefreshToken refreshToken) {
+        return new LoginBasicResponse(member, accessToken, refreshToken);
     }
 }

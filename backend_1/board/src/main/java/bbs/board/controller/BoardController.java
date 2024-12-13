@@ -1,6 +1,7 @@
 package bbs.board.controller;
 
 import bbs.board.domain.Member;
+import bbs.board.dto.MemberDTO;
 import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.request.BoardLikedDTO;
 import bbs.board.dto.request.BoardRegisterRequestDTO;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "예제 API", description = "Swagger 테스트용 API")
 public class BoardController {
     private final BoardService boardService;
-    private final MemberRepository memberRepository;
+
 
     @GetMapping("/board")
     public ResponseEntity<BoardListBasicResponse> getBoardList(final BoardSearchRequestDTO dto){
@@ -61,11 +62,14 @@ public class BoardController {
     }
 
     private final LoginService loginService;
+    private final MemberRepository memberRepository;
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void init(){
         Member member = new Member("test@test.com");
-        memberRepository.save(member);
+        MemberDTO memberDTO = new MemberDTO(member);
+        memberDTO.setPassword(member.getPassword());
+        loginService.saveMember(memberDTO);
 
         for (int i = 0; i < 100; i++) {
             BoardRegisterRequestDTO requestDTO = new BoardRegisterRequestDTO("title" + i, "content" + i, member.getEmail());

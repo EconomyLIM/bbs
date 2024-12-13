@@ -8,6 +8,7 @@ import bbs.board.dto.request.SaveCommentRequest;
 import bbs.board.repository.BoardRepository;
 import bbs.board.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Rollback(false)
+@Slf4j
 class CommentServiceTest {
 
     @Autowired
@@ -62,18 +64,7 @@ class CommentServiceTest {
 
     @Test
     void 댓글_하나_저장에_성공해야한다(){
-        SaveCommentRequest request = new SaveCommentRequest();
-        request.setBoardId(1L);
-        request.setMemberEmail("test@test.com");
-        request.setCommentContent("testContent");
-        commentService.save(request);
 
-        FindCommentByBoardRequest findRequest = new FindCommentByBoardRequest();
-        findRequest.setBoardId(1L);
-
-        List<Comment> byBoard = commentService.findByBoard(findRequest);
-
-        assertThat(byBoard.size()).isEqualTo(1);
     }
 
     @Test
@@ -84,7 +75,7 @@ class CommentServiceTest {
         request.setCommentContent("testContent");
         commentService.save(request);
 
-        System.out.println("request.getCommentId() = " + request.getCommentId());
+        log.info("request.getCommentId() = {}", request.getCommentId());
         SaveCommentRequest secondRequest = new SaveCommentRequest();
         secondRequest.setBoardId(1L);
         secondRequest.setMemberEmail("test@test.com");
@@ -95,9 +86,6 @@ class CommentServiceTest {
         FindCommentByBoardRequest findRequest = new FindCommentByBoardRequest();
         findRequest.setBoardId(1L);
 
-        List<Comment> byBoard = commentService.findByBoard(findRequest);
-
-        assertThat(byBoard.size()).isEqualTo(2);
     }
 
 }

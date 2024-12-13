@@ -8,6 +8,8 @@ import bbs.board.dto.response.LoginBasicResponse;
 import bbs.board.service.LoginService;
 import bbs.board.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,20 +38,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginBasicResponse> login(@Valid @RequestBody LoginDTO loginDTO){
-        Member loginedMember = loginService.login(loginDTO);
-        return ResponseEntity.ok(new LoginBasicResponse(loginedMember));
+    public ResponseEntity<LoginBasicResponse> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response){
+        LoginBasicResponse loginBasicResponse = loginService.login(loginDTO);
+        return ResponseEntity.ok(loginBasicResponse);
     }
-
-//    @EventListener(ApplicationReadyEvent.class)
-    public void initMember(){
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setEmail("test@test.com");
-        memberDTO.setPassword("123456");
-        memberDTO.setNickname("test");
-        memberDTO.setUsername("test");
-        loginService.saveMember(memberDTO);
-    }
-
-
 }
