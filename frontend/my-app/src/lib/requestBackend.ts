@@ -37,6 +37,7 @@ export const requestBackend = async (
         if(process.env.NODE_ENV === 'development'){
             console.log({...response.data,url:fullUrl});
         }
+
         return response.data;
     } catch (error) {
         console.error(`Error with ${method.toUpperCase()} request to backend : {url : ${endpoint}`, error);

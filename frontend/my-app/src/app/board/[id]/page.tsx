@@ -1,4 +1,4 @@
-import {BoardDetail} from "@/app/_components/BoardDetail";
+import {BoardDetail} from "@/app/_components/board/BoardDetail";
 import React from 'react';
 
 interface BoardPageProps {

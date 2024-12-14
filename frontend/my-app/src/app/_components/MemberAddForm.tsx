@@ -43,61 +43,35 @@ export default function MemberAddForm() {
 
     return (
         <>
-            <div className={"container"}>
-                <form role="form" action="/members/new" method="post">
-                    <div className={"form-group"}>
-                        <label htmlFor={"email"}>이메일</label>
-                        <input
-                            type="text"
-                            name="email"
-                            id="email"
-                            placeholder="이메일을 입력하세요"
-                            value={memberAddForm.email}
-                            onChange={handle}
-                            className={"form-control"}
-                        />
-                    </div>
-                    <div className={"form-group"}>
-                        <label htmlFor={"password"}>비밀번호</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="비밀번호를 입력하세요"
-                            value={memberAddForm.password}
-                            onChange={handle}
-                            className={"form-control"}
-                        />
-                    </div>
-                    <div className={"form-group"}>
-                        <label htmlFor={"username"}>이름</label>
-                        <input
-                            type="text"
-                            name="username"
-                            id="username"
-                            placeholder="이름을 입력하세요"
-                            value={memberAddForm.username}
-                            onChange={handle}
-                            className={"form-control"}
-                        />
-                    </div>
-                    <div className={"form-group"}>
-                        <label htmlFor={"nickname"}>닉네임</label>
-                        <input
-                            type="text"
-                            name="nickname"
-                            id="nickname"
-                            placeholder="닉네임을 입력하세요"
-                            value={memberAddForm.nickname}
-                            onChange={handle}
-                            className={"form-control"}
-                        />
-                    </div>
-                    <button type={"button"} className={"btn btn-primary"} onClick={memberAddApi}>
-                        저장
-                    </button>
-                </form>
-            </div>
+            <main>
+                <div className={"auth-container"}>
+                    <h2>Sign Up</h2>
+                    <form>
+                        <label htmlFor="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" value={memberAddForm.email}
+                               onChange={handle} required/>
+
+                        <label htmlFor="password">Password</label>
+                        <input type="password" id="password" placeholder="********" value={memberAddForm.password}
+                               onChange={handle} required/>
+
+                        <label htmlFor="nickname">User Name</label>
+                        <input type="text" id="nickname" placeholder="Your nickname" value={memberAddForm.username}
+                               onChange={handle} required/>
+
+                        <label htmlFor="nickname">Nickname</label>
+                        <input type="text" id="nickname" placeholder="Your nickname" value={memberAddForm.nickname}
+                               onChange={handle} required/>
+
+                        <button type={"button"} onClick={memberAddApi}>
+                            회원가입
+                        </button>
+                    </form>
+                    <p className="switch-link">
+                        Already have an account? <a href="login.html">Login here</a>
+                    </p>
+                </div>
+            </main>
         </>
     );
 }

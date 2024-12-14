@@ -1,4 +1,4 @@
-import {BoardList} from "@/app/_components/BoardList";
+import {BoardList} from "@/app/_components/board/BoardList";
 
 export default async function BoardPage() {
 
