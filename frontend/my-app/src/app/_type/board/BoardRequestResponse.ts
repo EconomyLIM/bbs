@@ -6,11 +6,13 @@ import {ApiResponse} from "@/app/_type/CommonResponse";
  */
 
 export interface Board {
-    id: number
+    id: string
     , title: string
     , content: string
     , likedCnt: number
     , memberEmail: string
+    , nickname: string
+    , mine: boolean
 }
 
 export interface BoardResponse extends ApiResponse{
@@ -47,6 +49,14 @@ export interface BoardRegisterRequest {
 
 export interface BoardRegisterResponse extends ApiResponse{
     boardId: number
+}
+
+/**
+ * 게시판 삭제
+ */
+
+export interface BoardDeleteRequest{
+    boardId: string
 }
 
 /**

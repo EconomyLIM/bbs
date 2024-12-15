@@ -29,4 +29,8 @@ public class MemberDTO {
         this.username = member.getUsername();
         this.nickname = member.getNickname();
     }
+
+    public MemberDTO(final String email) {
+        this.email = email;
+    }
 }

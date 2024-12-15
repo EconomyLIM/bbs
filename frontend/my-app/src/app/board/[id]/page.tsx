@@ -1,7 +1,7 @@
 import {BoardDetail} from "@/app/_components/board/BoardDetail";
 import React from 'react';
 
-interface BoardPageProps {
+export interface BoardPageProps {
     params: {
         id: string;
     };

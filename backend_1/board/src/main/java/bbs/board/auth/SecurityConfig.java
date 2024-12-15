@@ -26,8 +26,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider){
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Bean
@@ -44,28 +47,15 @@ public class SecurityConfig {
                         requests.requestMatchers("/login", "/member/add").permitAll() // 인증 불필요
                                 .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+//                .sessionManagement(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptions-> exceptions.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtTokenProvider);
-//        http.authorizeHttpRequests((requests)->
-//                        requests.requestMatchers("/")
-//                                .authenticated()
-//                                .requestMatchers("/login", "/member/add")
-//                                .permitAll()
-//                )
-//                .httpBasic(Customizer.withDefaults())
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-
 
 //    @Bean
     public InMemoryUserDetailsManager userDetailsService() {

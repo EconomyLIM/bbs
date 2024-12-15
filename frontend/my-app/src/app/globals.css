@@ -173,6 +173,7 @@ main {
     border-radius: 4px;
     text-decoration: none;
     margin-top: 0.5rem;
+
 }
 
 .comment-actions:hover {
@@ -185,7 +186,7 @@ main {
     margin-left: 2rem;
     border-left: 2px solid #eee;
     padding-left: 1rem;
-    display: none;
+    display: block;
 }
 
 .comment.replies-visible .replies {
@@ -879,3 +880,33 @@ main {
 /* 로그인 페이지, 회원가입 페이지 관련 중복 제거 */
 /* 위에서 이미 auth-container 등 공통 클래스 정의 완료 */
 /* ========================================= */
+
+.post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-actions button {
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+    float: right;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.post-actions button:hover {
+    background: #ddd;
+}
+
+/* edit-btn, delete-btn 은 원하는 대로 스타일링 가능 */
+.edit-btn::before {
+    content: "✏️ ";
+}
+
+.delete-btn::before {
+    content: "🗑️ ";
+}
+

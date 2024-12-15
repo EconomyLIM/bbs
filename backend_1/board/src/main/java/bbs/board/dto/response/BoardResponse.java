@@ -18,6 +18,7 @@ public class BoardResponse {
     private String content;
     private int likedCnt;
     private String memberEmail;
+    private String nickname;
 //    private Category category;
 
     public BoardResponse(Board board) {
@@ -26,6 +27,7 @@ public class BoardResponse {
         this.content = board.getContent();
         this.likedCnt = board.getLikedCnt();
         this.memberEmail = board.getMember().getEmail();
+        this.nickname = board.getMember().getNickname();
 //        this.category = board.getCategory();
     }
 }

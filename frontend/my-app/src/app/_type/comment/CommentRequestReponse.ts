@@ -7,6 +7,9 @@ export interface Comments {
     commentId: bigint
     , commentContent: string
     , memberEmail: string
+    , nickname: string
+    , registered: string
+    , likedCnt: number
     , childComment: Comments[]
 }
 

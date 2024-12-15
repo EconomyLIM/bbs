@@ -57,7 +57,7 @@ public class LoginService {
             throw new CustomException(ErrorCode.NO_SEARCH_MEMBER);
         }
 
-        String accessToken = jwtTokenProvider.createToken(findMember.getEmail());
+        String accessToken = jwtTokenProvider.createToken(findMember.getEmail(), findMember.getNickname());
 
         return LoginBasicResponse.of(findMember, accessToken, null);
     }

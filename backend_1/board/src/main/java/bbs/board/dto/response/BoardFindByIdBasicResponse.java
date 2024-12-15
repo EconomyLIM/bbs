@@ -21,7 +21,7 @@ public class BoardFindByIdBasicResponse extends BasicResponse {
         this.board = board;
     }
 
-    public static BoardFindByIdBasicResponse of(Board board) {
+    public static BoardFindByIdBasicResponse of(Board board, String currentLoginEmail) {
         BoardDTO boardDTO = BoardDTO
                 .builder()
                 .id(board.getId())
@@ -29,8 +29,11 @@ public class BoardFindByIdBasicResponse extends BasicResponse {
                 .content(board.getContent())
                 .memberEmail(board.getMember().getEmail())
                 .likedCnt(board.getLikedCnt())
+                .isMine(board.getMember().getEmail().equals(currentLoginEmail))
                 .build();
 
        return new BoardFindByIdBasicResponse(boardDTO);
     }
+
+
 }

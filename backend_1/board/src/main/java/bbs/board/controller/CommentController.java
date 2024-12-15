@@ -7,10 +7,7 @@ import bbs.board.dto.response.FindCommentByBoardBasicResponse;
 import bbs.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * date           : 2024-12-11
@@ -24,6 +21,11 @@ public class CommentController {
 
     @PostMapping("/comment/save")
     public ResponseEntity<BasicResponse> saveComment(@RequestBody final SaveCommentRequest comment) {
+        return ResponseEntity.ok(commentService.save(comment));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<BasicResponse> deleteComment(@RequestBody final SaveCommentRequest comment) {
         return ResponseEntity.ok(commentService.save(comment));
     }
 

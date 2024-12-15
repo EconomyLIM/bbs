@@ -2,9 +2,10 @@
 
 import {useEffect, useState} from "react";
 import {Board, BoardLikedRequest} from "@/app/_type/board/BoardRequestResponse";
-import {boardLiked, getBoardDetail} from "@service/boardService";
+import {boardDelete, boardLiked, getBoardDetail} from "@service/boardService";
 import {Comments, SaveCommentRequest} from "@/app/_type/comment/CommentRequestReponse";
 import {findCommentByBoard, saveComment} from "@service/CommentService";
+import {useRouter} from "next/navigation";
 
 
 interface BoardDetailProps {
@@ -16,7 +17,8 @@ export function BoardDetail({ id }: BoardDetailProps) {
     const [board, setBoard] = useState<Board>();
     const [comments, setComments] = useState<Comments[]>([]);
     const [newComment, setNewComment] = useState<string>('');
-    const [replyTo, setReplyTo] = useState<bigint | null>(null); // 답글 대상 ID
+    const [openReplies, setOpenReplies] = useState<Record<string, boolean>>({});
+    const router = useRouter();
 
     const getCommentAPI = async () => {
         const getComment = await findCommentByBoard({ boardId: id });
@@ -24,12 +26,15 @@ export function BoardDetail({ id }: BoardDetailProps) {
     }
     const boardDetailAPI = async () => {
         const getBoard = await getBoardDetail({ boardId: id });
-        setBoard(getBoard.board); // 데이터 설정
+        if (getBoard.code ===  "OK"){
+            setBoard(getBoard.board); // 데이터 설정
+        }else{
+            alert(getBoard.message);
+            router.push("/board/list");
+        }
     };
 
     useEffect(() => {
-
-
         boardDetailAPI().then(()=>{
             getCommentAPI();
         });
@@ -40,56 +45,7 @@ export function BoardDetail({ id }: BoardDetailProps) {
         return <div>Loading...</div>;
     }
 
-    // 댓글 추가 함수
-    // const addComment = (content: string, parentId: string | null = null) => {
-    //     // const newComment: Comment = {
-    //     //     id: Math.random().toString(36).substring(2, 15), // 랜덤 ID 생성
-    //     //     content,
-    //     //     parentId,
-    //     //     children: [],
-    //     // };
-    //     //
-    //     // if (parentId === null) {
-    //     //     // 최상위 댓글 추가
-    //     //     setComments((prev) => [...prev, newComment]);
-    //     // } else {
-    //     //     // 답글 추가
-    //     //     setComments((prev) =>
-    //     //         prev.map((comment) =>
-    //     //             comment.id === parentId
-    //     //                 ? { ...comment, children: [...comment.children, newComment] }
-    //     //                 : comment
-    //     //         )
-    //     //     );
-    //     // }
-    // };
-
-    // 댓글 렌더링 함수 (재귀적으로 자식 댓글 렌더링)
-    const renderComments = (comments: Comments[]) =>
-        comments.map((comment) => (
-            <div key={comment.commentId}>
-                <p>
-                    {comment.commentContent}{' '}
-                    <button onClick={() => setReplyTo(comment.commentId)}>답글</button>
-                </p>
-                {/*{renderComments(comment.children)}*/}
-            </div>
-        ));
-
-    const addComent = async () => {
-        const obj= {
-            boardId: id
-            , memberEmail: "test@test.com"
-            , commentContent: newComment
-        } as SaveCommentRequest;
-
-        const getComment = await saveComment(obj);
-        if (getComment.code === "OK"){
-            getCommentAPI();
-        }
-    }
-
-    const updateLikes = async (id: number, isLike: boolean) => {
+    const updateLikes = async (id: string, isLike: boolean) => {
         const requestObj: BoardLikedRequest = {
             memberEmail: 'test@test.com',
             boardId: id.toString(),
@@ -106,11 +62,58 @@ export function BoardDetail({ id }: BoardDetailProps) {
         }
     }
 
+    /**
+     * 댓글 관련
+     */
+    const addComment = async () => {
+        const obj= {
+            boardId: id
+            , memberEmail: "test@test.com"
+            , commentContent: newComment
+        } as SaveCommentRequest;
+
+        const getComment = await saveComment(obj);
+        if (getComment.code === "OK"){
+            getCommentAPI();
+        }
+    }
+
+    const toggleReplies = (commentId: string) => {
+
+        setOpenReplies((prev) => ({
+            ...prev,
+            [commentId.toString()]: !prev[commentId.toString()],
+        }));
+    };
+
+    const boardDeleteApi = async ()=> {
+
+        if (confirm("정말로 삭제하시겠습니까?")){
+            const deleteApi = await boardDelete({ boardId: id });
+            if (deleteApi.code === "OK"){
+                alert("삭제되었습니다.");
+                router.push("/board/list");
+            }else{
+                alert(deleteApi.message);
+            }
+        }
+    }
+
+    const updateBoard = () => {
+        router.push(`/board/${id}/update`);
+    }
+
     return (
         <>
             <main>
                 <div className="post-container" id="post">
                     <h1>{board.title}</h1>
+                    {board.mine &&
+                        <div className="post-actions">
+                            <button className="edit-btn" onClick={updateBoard}>수정</button>
+                            <button className="delete-btn" onClick={boardDeleteApi}>삭제</button>
+                        </div>
+                    }
                     <div className="post-category">카테고리: 뉴스</div>
                     <div className="post-meta">작성자: {board.memberEmail} | 2024-12-14</div>
                     <div className="post-content">
@@ -125,72 +128,51 @@ export function BoardDetail({ id }: BoardDetailProps) {
 
                 <div className={"comments-section"}>
                     <h2>댓글</h2>
-                    <div className="comment" id="comment-1">
-                        <div className="comment-author">Alice</div>
-                        <div className="comment-meta">2024-12-14 10:00</div>
-                        <div className="comment-content">
-                            이 게시글에 대한 댓글 내용입니다. 정말 유용한 정보네요.
-                        </div>
-                        <div className="like-dislike" data-id="comment-1" data-type="comment">
-                            <button className="like-btn">👍</button>
-                            <span className="like-count">0</span>
-                            <button className="dislike-btn">👎</button>
-                        </div>
-                        <a href="#" className="comment-actions" data-target="#comment-1">답글</a>
-
-
-                        <div className="replies">
-                            <div className="reply" id="reply-bob">
-                                <div className="comment-author">Bob</div>
-                                <div className="comment-meta">2024-12-14 10:30</div>
-                                <div className="comment-content">
-                                    Alice 님의 댓글에 대한 대댓글 예시입니다.
+                    {comments.map(comment => (
+                        <div className="comment" id={`comment-${comment.commentId}`} key={comment.commentId.toString()}>
+                            <div className="comment-author">{comment.memberEmail}</div>
+                            <div className="comment-meta">작성일이 들어갈자리</div>
+                            <div className="comment-content">
+                                {comment.commentContent}
+                            </div>
+                            <div className="like-dislike" data-id="comment-1" data-type="comment">
+                                <button className="like-btn">👍</button>
+                                <span className="like-count">0</span>
+                                <button className="dislike-btn">👎</button>
+                            </div>
+                            <button className="comment-actions" onClick={() => toggleReplies(comment.commentId.toString())} >답글</button>
+                            {openReplies[comment.commentId.toString()] && (
+                                <div className="replies">
+                                    {/* 대댓글 목록 */}
+                                    {comment.childComment && comment.childComment.map((reply) => (
+                                        <div className="reply" id={`reply-${reply.commentId}`} key={reply.commentId}>
+                                            <div className="comment-author">{reply.nickname}</div>
+                                            <div className="comment-meta">{reply.registered}</div>
+                                            <div className="comment-content">{reply.commentContent}</div>
+                                            <div className="like-dislike" data-id={`reply-${reply.commentId}`} data-type="comment">
+                                                <button className="like-btn">👍</button>
+                                                <span className="like-count">0</span>
+                                                <button className="dislike-btn">👎</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {/* 대댓글 입력 폼 */}
+                                    <div className="reply-form">
+                                        <input type="text" placeholder="대댓글 입력" />
+                                        <button type="button">등록</button>
+                                    </div>
                                 </div>
-                                <div className="like-dislike" data-id="reply-bob" data-type="comment">
-                                    <button className="like-btn">👍</button>
-                                    <span className="like-count">0</span>
-                                    <button className="dislike-btn">👎</button>
-                                </div>
-                            </div>
-
-                            <div className="reply-form">
-                                <input type="text" placeholder="대댓글 입력"/>
-                                    <button type="button">등록</button>
-                            </div>
+                            )}
                         </div>
-                    </div>
-
-                    <div className="comment" id="comment-2">
-                        <div className="comment-author">Charlie</div>
-                        <div className="comment-meta">2024-12-14 11:00</div>
-                        <div className="comment-content">
-                            두 번째 댓글 내용입니다. 좋은 정보 감사합니다.
-                        </div>
-                        <div className="like-dislike" data-id="comment-2" data-type="comment">
-                            <button className="like-btn">👍</button>
-                            <span className="like-count">0</span>
-                            <button className="dislike-btn">👎</button>
-                        </div>
-                        <a href="#" className="comment-actions" data-target="#comment-2">답글</a>
-
-                        <div className="replies">
-
-                            <div className="reply-form">
-                                <input type="text" placeholder="대댓글 입력"/>
-                                    <button type="button">등록</button>
-                            </div>
-                        </div>
-                    </div>
-
+                    ))}
                     <div className="comment-input">
-                        <input type="text" placeholder="댓글을 입력하세요"/>
-                            <button type="button">등록</button>
+                        <input type="text" placeholder="댓글을 입력하세요" onChange={(e)=>{setNewComment(e.target.value)}}/>
+                        <button type="button" onClick={addComment}>등록</button>
                     </div>
-
                 </div>
 
             </main>
         </>
 
-);
+    );
 }

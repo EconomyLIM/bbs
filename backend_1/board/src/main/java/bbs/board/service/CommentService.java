@@ -48,7 +48,7 @@ public class CommentService {
     @Transactional
     public FindCommentByBoardBasicResponse findByBoard(FindCommentByBoardRequest request) {
         Board findBoard = boardRepository.findById(request.getBoardId())
-                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
         return FindCommentByBoardBasicResponse.of(commentRepository.findByBoard(findBoard));
     }
 }

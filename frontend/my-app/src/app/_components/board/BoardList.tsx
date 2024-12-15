@@ -62,49 +62,58 @@ export function BoardList(){
                     {/* forum-row 형식으로 게시판 리스트 렌더링 */}
                     {boardList.map(board => (
                         <a href={`/board/${board.id}`} key={board.id}>
-                        <div className="forum-row" >
-                            <div className="forum-icon">📂</div>
-                            <div className="forum-info">
-                                <h3>{board.title}</h3>
-                                {/*<p>{board.description}</p>*/}
-                                <span>testtest</span>
-                                {/*<a href="#" className="read-more">Read more</a>*/}
+                            <div className="forum-row">
+                                <div className="forum-icon">📂</div>
+                                <div className="forum-info">
+                                    <h3>{board.title}</h3>
+                                    {/*<p>{board.description}</p>*/}
+                                    <span>여기에 뭐넣지?</span>
+                                    {/*<a href="#" className="read-more">Read more</a>*/}
+                                </div>
+                                <div className="forum-stats">
+                                    {/*<span>{board.topics} Topics</span>*/}
+                                    {/*<span>{board.posts} Posts</span>*/}
+                                    <span>{board.nickname}</span>
+                                    {/*<span>추천수:</span>*/}
+                                </div>
+                                <div className="last-post">
+                                    <span>추천수:</span>
+                                    <span>{board.likedCnt}</span>
+                                </div>
                             </div>
-                            <div className="forum-stats">
-                                {/*<span>{board.topics} Topics</span>*/}
-                                {/*<span>{board.posts} Posts</span>*/}
-                                <span>testtest</span>
-                                <span>testtest</span>
-                            </div>
-                            <div className="last-post">
-                                {/*<span>{board.lastPost}</span>*/}
-                                <span>testtest</span>
-                            </div>
-                        </div>
                         </a>
                     ))}
                 </section>
 
-                <aside className="sidebar-right">
-                    <div className="recent-topics">
-                        <h4>Recent Topics</h4>
-                        <ul>
-                            <li>ceshiyigezhuti</li>
-                            <li>aaaaaaaaaaaaaaaaaa</li>
-                            <li>test</li>
-                            <li>mmmmmmmmmmmmm</li>
-                            <li>test4</li>
-                        </ul>
+                {/*<aside className="sidebar-right">*/}
+                {/*    <div className="recent-topics">*/}
+                {/*        <h4>Recent Topics</h4>*/}
+                {/*        <ul>*/}
+                {/*            <li>ceshiyigezhuti</li>*/}
+                {/*            <li>aaaaaaaaaaaaaaaaaa</li>*/}
+                {/*            <li>test</li>*/}
+                {/*            <li>mmmmmmmmmmmmm</li>*/}
+                {/*            <li>test4</li>*/}
+                {/*        </ul>*/}
 
-                        <div className="footer-links">
-                            <a href="#">Home</a>
-                            <a href="#">About Us</a>
-                            <a href="#">FAQs</a>
-                            <a href="#">Blog</a>
-                            <a href="#">Contact</a>
-                        </div>
-                    </div>
-                </aside>
+                {/*        <div className="footer-links">*/}
+                {/*            <a href="#">Home</a>*/}
+                {/*            <a href="#">About Us</a>*/}
+                {/*            <a href="#">FAQs</a>*/}
+                {/*            <a href="#">Blog</a>*/}
+                {/*            <a href="#">Contact</a>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</aside>*/}
+
+                <div className="pagination">
+                    {currentPage != 1 && <button>«</button>}
+
+                    <button className="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>»</button>
+                </div>
             </main>
         </>
     );

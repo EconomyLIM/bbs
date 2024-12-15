@@ -1,5 +1,6 @@
 import {requestApiFetch} from "@/lib/requestApiFetch";
 import {
+    BoardDeleteRequest,
     BoardDetailRequest,
     BoardDetailResponse, BoardLikedRequest,
     BoardListResponse, BoardRegisterRequest, BoardRegisterResponse,
@@ -23,4 +24,8 @@ export const getBoardRegister = async (data: BoardRegisterRequest) :Promise<Boar
 
 export const boardLiked = async (data: BoardLikedRequest) :Promise<ApiResponse> => {
     return await requestApiFetch<ApiResponse>('POST', `/board/liked`, data);
+}
+
+export const boardDelete = async (data: BoardDeleteRequest) :Promise<ApiResponse> => {
+    return await requestApiFetch<ApiResponse>('DELETE', `/board/${data.boardId}`);
 }

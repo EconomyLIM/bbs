@@ -1,12 +1,10 @@
 package bbs.board.controller;
 
 import bbs.board.domain.Member;
+import bbs.board.dto.AuthPrincipalMemberDTO;
 import bbs.board.dto.MemberDTO;
 import bbs.board.dto.common.BasicResponse;
-import bbs.board.dto.request.BoardLikedDTO;
-import bbs.board.dto.request.BoardRegisterRequestDTO;
-import bbs.board.dto.request.BoardSearchRequestDTO;
-import bbs.board.dto.request.BoardUpdateRequestDTO;
+import bbs.board.dto.request.*;
 import bbs.board.dto.response.BoardFindByIdBasicResponse;
 import bbs.board.dto.response.BoardListBasicResponse;
 import bbs.board.dto.response.BoardSaveBasicResponse;
@@ -19,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,17 +46,35 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public ResponseEntity<BoardFindByIdBasicResponse> getBoardById(@PathVariable final Long id){
-        return ResponseEntity.ok(boardService.findById(id));
+    public ResponseEntity<BoardFindByIdBasicResponse> getBoardById(
+            @PathVariable final Long id
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto){
+        return ResponseEntity.ok(boardService.findById(id , memberDto) );
     }
 
     @PatchMapping("/board/{id}")
-    public ResponseEntity<BoardSaveBasicResponse> updateBoardById(@PathVariable final Long id, @RequestBody final BoardUpdateRequestDTO dto){
+    public ResponseEntity<BoardSaveBasicResponse> updateBoardById(
+            @PathVariable final Long id
+            , @RequestBody final BoardUpdateRequestDTO dto
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto){
+
         return ResponseEntity.ok(boardService.update(id, dto));
     }
 
+    @DeleteMapping("/board/{id}")
+    public ResponseEntity<BasicResponse> deleteBoardById(
+            @PathVariable final Long id
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto){
+
+        return ResponseEntity.ok(boardService.delete(id, memberDto.getEmail()));
+    }
+
     @PostMapping("/board")
-    public ResponseEntity<BoardSaveBasicResponse> registerBoard(@RequestBody final BoardRegisterRequestDTO dto){
+    public ResponseEntity<BoardSaveBasicResponse> registerBoard(
+            @RequestBody final BoardRegisterRequestDTO dto
+           , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto){
+        dto.setMemberEmail(memberDto.getEmail());
+        dto.setNickname(memberDto.getNickname());
         return ResponseEntity.ok(boardService.save(dto));
     }
 
@@ -72,13 +89,14 @@ public class BoardController {
         loginService.saveMember(memberDTO);
 
         for (int i = 0; i < 100; i++) {
-            BoardRegisterRequestDTO requestDTO = new BoardRegisterRequestDTO("title" + i, "content" + i, member.getEmail());
+            BoardRegisterRequestDTO requestDTO = new BoardRegisterRequestDTO("title" + i, "content" + i, member.getEmail(), member.getNickname());
             boardService.save(requestDTO);
         }
     }
 
     @PostMapping("/board/liked")
-    public ResponseEntity<BasicResponse> registerBoard(@RequestBody final BoardLikedDTO dto){
+    public ResponseEntity<BasicResponse> registerBoard(@RequestBody final BoardLikedDTO dto, @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDTO){
+        dto.setMemberEmail(memberDTO.getEmail());
         boardService.likedBoard(dto);
         return ResponseEntity.ok(new BasicResponse());
     }

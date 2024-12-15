@@ -37,6 +37,9 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(nullable = false)
+    private String nickname;
+
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Keyword> keywords = new ArrayList<>();
 
@@ -85,6 +88,7 @@ public class Board extends BaseEntity {
         this.member = member;
         this.category = boardRequestDTO.getCategory();
         this.likedCnt = 0;
+        this.nickname = boardRequestDTO.getNickname();
     }
 
     public Board(String title, String content, Member member) {

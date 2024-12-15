@@ -65,7 +65,7 @@ export default function LoginForm() {
                         <button type={"button"} onClick={loginAPI}>로그인</button>
                     </form>
                     <p className="switch-link">
-                    Already have an account? <a href="login.html">Login here</a>
+                        Don&#39;t have an account? <a href="/member/new">Create one now</a>
                     </p>
                 </div>
             </main>

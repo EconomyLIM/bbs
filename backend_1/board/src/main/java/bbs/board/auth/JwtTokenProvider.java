@@ -34,12 +34,13 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(tokenSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String email) {
+    public String createToken(String email, String nickname) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + tokenExpirationMs);
 
         return Jwts.builder()
                 .setSubject(email)
+                .claim("nickname", nickname)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -61,5 +62,14 @@ public class JwtTokenProvider {
         Claims claims = Jwts.parserBuilder().setSigningKey(key)
                 .build().parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    public String getClaimFromToken(final String keyName, final String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get(keyName, String.class); // nickname 추출
     }
 }

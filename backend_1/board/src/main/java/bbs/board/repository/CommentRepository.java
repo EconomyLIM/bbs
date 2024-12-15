@@ -35,4 +35,8 @@ public class CommentRepository {
                 .setParameter("board", board)
                 .getResultList();
     }
+
+    public void deleteComment(Comment comment){
+        em.remove(comment);
+    }
 }

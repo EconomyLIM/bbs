@@ -3,6 +3,8 @@ package bbs.board.service;
 import bbs.board.domain.Board;
 import bbs.board.domain.BoardRecommendation;
 import bbs.board.domain.Member;
+import bbs.board.dto.AuthPrincipalMemberDTO;
+import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.common.CommonPageSizes;
 import bbs.board.dto.request.BoardLikedDTO;
 import bbs.board.dto.request.BoardRegisterRequestDTO;
@@ -57,18 +59,51 @@ public class BoardService {
         return BoardSaveBasicResponse.of(findBoard.getId());
     }
 
-    public BoardFindByIdBasicResponse findById(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
-        return BoardFindByIdBasicResponse.of(board);
+    @Transactional
+    public BasicResponse delete (Long id, String memberEmail) {
+        Board findBoard = boardRepository
+                .findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        if (!findBoard.getMember().getEmail().equals(memberEmail)){
+            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+        }
+
+        boardRepository.delete(findBoard);
+        return BasicResponse.of();
+    }
+
+    public BoardFindByIdBasicResponse findById(final Long id, final AuthPrincipalMemberDTO memberDto) {
+        Board board = boardRepository
+                .findById(id)
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
+
+        String email = null;
+        if (memberDto.getEmail() != null) {
+            email = memberDto.getEmail();
+        }
+
+        return BoardFindByIdBasicResponse.of(board, email);
     }
 
     public BoardListBasicResponse findAll(BoardSearchRequestDTO boardSearchRequestDTO) {
-        PageRequest pageRequest = PageRequest.of(boardSearchRequestDTO.getPage() - 1, CommonPageSizes.BOARD_PAGE_SIZE.getPageSize());
+
+        int page = getPage(boardSearchRequestDTO);
+
+        PageRequest pageRequest = PageRequest.of(page, CommonPageSizes.BOARD_PAGE_SIZE.getPageSize());
         Page<Board> result = boardRepository.findAll(pageRequest);
         List<Board> content = result.getContent();
         List<BoardResponse> list = content.stream().map(BoardResponse::new).toList();
 
         return BoardListBasicResponse.of(list, boardSearchRequestDTO.getPage(), result.getTotalPages());
+    }
+
+    private static int getPage(final BoardSearchRequestDTO boardSearchRequestDTO) {
+        int page = 0;
+        if (boardSearchRequestDTO.getPage() >= 1){
+            page = boardSearchRequestDTO.getPage() - 1;
+        }
+        return page;
     }
 
     public BoardListBasicResponse findAllBySearchKeyword(BoardSearchRequestDTO boardSearchRequestDTO) {

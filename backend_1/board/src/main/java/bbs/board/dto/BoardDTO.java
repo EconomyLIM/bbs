@@ -18,4 +18,6 @@ public class BoardDTO {
     private String memberEmail;
     private LocalDateTime updateDate;
     private int likedCnt;
+
+    private boolean isMine;
 }
