@@ -1,6 +1,7 @@
 package bbs.board.repository;
 
-import bbs.board.domain.Category;
+import bbs.board.category.entity.Category;
+import bbs.board.category.repository.CategoryRepository;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -11,9 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * date           : 2024-11-28

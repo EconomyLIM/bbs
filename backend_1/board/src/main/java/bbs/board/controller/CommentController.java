@@ -1,5 +1,6 @@
 package bbs.board.controller;
 
+import bbs.board.dto.AuthPrincipalMemberDTO;
 import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.request.FindCommentByBoardRequest;
 import bbs.board.dto.request.SaveCommentRequest;
@@ -7,6 +8,7 @@ import bbs.board.dto.response.FindCommentByBoardBasicResponse;
 import bbs.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,7 +22,10 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment/save")
-    public ResponseEntity<BasicResponse> saveComment(@RequestBody final SaveCommentRequest comment) {
+    public ResponseEntity<BasicResponse> saveComment(
+            @RequestBody final SaveCommentRequest comment
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto) {
+        comment.setMemberEmail(memberDto.getEmail());
         return ResponseEntity.ok(commentService.save(comment));
     }
 

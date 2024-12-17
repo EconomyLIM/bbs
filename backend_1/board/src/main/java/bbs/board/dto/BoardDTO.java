@@ -16,8 +16,13 @@ public class BoardDTO {
     private String title;
     private String content;
     private String memberEmail;
+    private String nickname;
     private LocalDateTime updateDate;
     private int likedCnt;
+    private String registeredDate;
+
+    private Long categoryId;
+    private String categoryName;
 
     private boolean isMine;
 }

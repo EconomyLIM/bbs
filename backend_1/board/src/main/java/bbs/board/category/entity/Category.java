@@ -1,11 +1,9 @@
-package bbs.board.domain;
+package bbs.board.category.entity;
 
+import bbs.board.domain.Board;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;

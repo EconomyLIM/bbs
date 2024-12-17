@@ -13,6 +13,9 @@ export interface Board {
     , memberEmail: string
     , nickname: string
     , mine: boolean
+    , categoryId: string
+    , categoryName: string
+    , registeredDate: string
 }
 
 export interface BoardResponse extends ApiResponse{
@@ -45,6 +48,7 @@ export interface BoardRegisterRequest {
     title: string
     , content: string
     , memberEmail: string
+    , categoryId: string
 }
 
 export interface BoardRegisterResponse extends ApiResponse{

@@ -38,8 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (token != null) {
-                if (jwtTokenProvider.validateToken(token)) {
-                    String email = jwtTokenProvider.getEmailFromToken(token);
+                String email = jwtTokenProvider.getEmailFromToken(token);
+                if (jwtTokenProvider.validateToken(token, email)) {
+
                     String nickname = jwtTokenProvider.getClaimFromToken("nickname", token);// ???
 
                     AuthPrincipalMemberDTO authPrincipalMemberDTO = new AuthPrincipalMemberDTO(email, nickname);

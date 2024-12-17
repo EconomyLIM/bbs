@@ -1,8 +1,7 @@
 package bbs.board.dto.request;
 
-import bbs.board.domain.Category;
+import bbs.board.category.entity.Category;
 import bbs.board.domain.Keyword;
-import bbs.board.domain.Member;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,11 +25,19 @@ public class BoardRegisterRequestDTO {
     private String memberEmail;
     private String nickname;
     private List<Keyword> keywords;
-    private Category category;
+    private Long categoryId;
 
     public BoardRegisterRequestDTO(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public BoardRegisterRequestDTO(final String title, final String content, final String memberEmail, final String nickname, final Long categoryId) {
+        this.title = title;
+        this.content = content;
+        this.memberEmail = memberEmail;
+        this.nickname = nickname;
+        this.categoryId = categoryId;
     }
 
     public BoardRegisterRequestDTO(final String title, final String content, final String memberEmail, final String nickname) {

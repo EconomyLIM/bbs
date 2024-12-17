@@ -12,7 +12,6 @@ interface BoardDetailProps {
     id: string;
 }
 
-
 export function BoardDetail({ id }: BoardDetailProps) {
     const [board, setBoard] = useState<Board>();
     const [comments, setComments] = useState<Comments[]>([]);
@@ -28,6 +27,7 @@ export function BoardDetail({ id }: BoardDetailProps) {
         const getBoard = await getBoardDetail({ boardId: id });
         if (getBoard.code ===  "OK"){
             setBoard(getBoard.board); // 데이터 설정
+            console.log(getBoard.board);
         }else{
             alert(getBoard.message);
             router.push("/board/list");
@@ -68,7 +68,6 @@ export function BoardDetail({ id }: BoardDetailProps) {
     const addComment = async () => {
         const obj= {
             boardId: id
-            , memberEmail: "test@test.com"
             , commentContent: newComment
         } as SaveCommentRequest;
 
@@ -114,8 +113,8 @@ export function BoardDetail({ id }: BoardDetailProps) {
                             <button className="delete-btn" onClick={boardDeleteApi}>삭제</button>
                         </div>
                     }
-                    <div className="post-category">카테고리: 뉴스</div>
-                    <div className="post-meta">작성자: {board.memberEmail} | 2024-12-14</div>
+                    <div className="post-category">카테고리: {board.categoryName}</div>
+                    <div className="post-meta">작성자: {board.nickname} | {board.registeredDate}</div>
                     <div className="post-content">
                         {board.content}
                     </div>

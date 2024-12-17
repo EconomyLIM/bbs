@@ -1,5 +1,6 @@
 package bbs.board.repository;
 
+import bbs.board.category.entity.Category;
 import bbs.board.domain.Board;
 import bbs.board.domain.Member;
 import bbs.board.dto.BoardDTO;
@@ -7,6 +8,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +37,12 @@ class BoardRepositoryTest {
                 .build();
         memberRepository.save(member);
 
+        Category category = new Category("test");
+
         Board board = Board.builder()
                 .title("testTitle2")
                 .content("testContent2")
+                .category(category)
                 .member(member).build();
 
         // when

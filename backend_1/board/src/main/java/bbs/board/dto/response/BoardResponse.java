@@ -19,7 +19,7 @@ public class BoardResponse {
     private int likedCnt;
     private String memberEmail;
     private String nickname;
-//    private Category category;
+    private String categoryName;
 
     public BoardResponse(Board board) {
         this.id = board.getId();
@@ -28,6 +28,6 @@ public class BoardResponse {
         this.likedCnt = board.getLikedCnt();
         this.memberEmail = board.getMember().getEmail();
         this.nickname = board.getMember().getNickname();
-//        this.category = board.getCategory();
+        this.categoryName = board.getCategory().getCategoryName();
     }
 }

@@ -1,5 +1,7 @@
 package bbs.board.controller;
 
+import bbs.board.category.entity.Category;
+import bbs.board.category.repository.CategoryRepository;
 import bbs.board.domain.Member;
 import bbs.board.dto.AuthPrincipalMemberDTO;
 import bbs.board.dto.MemberDTO;
@@ -32,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "예제 API", description = "Swagger 테스트용 API")
 public class BoardController {
     private final BoardService boardService;
-
 
     @GetMapping("/board")
     public ResponseEntity<BoardListBasicResponse> getBoardList(final BoardSearchRequestDTO dto){
@@ -80,6 +81,7 @@ public class BoardController {
 
     private final LoginService loginService;
     private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void init(){
@@ -88,8 +90,18 @@ public class BoardController {
         memberDTO.setPassword(member.getPassword());
         loginService.saveMember(memberDTO);
 
-        for (int i = 0; i < 100; i++) {
-            BoardRegisterRequestDTO requestDTO = new BoardRegisterRequestDTO("title" + i, "content" + i, member.getEmail(), member.getNickname());
+        Category topCategory1 = new Category("야구", 1);
+        Category topCategory2 = new Category("축구", 1);
+        Category topCategory3 = new Category("배드민턴", 1);
+        Category topCategory4 = new Category("탁구", 1);
+
+        categoryRepository.save(topCategory1);
+        categoryRepository.save(topCategory2);
+        categoryRepository.save(topCategory3);
+        categoryRepository.save(topCategory4);
+
+        for (int i = 0; i < 210; i++) {
+            BoardRegisterRequestDTO requestDTO = new BoardRegisterRequestDTO("title" + i, "content" + i, member.getEmail(), member.getNickname(), 1L);
             boardService.save(requestDTO);
         }
     }

@@ -1,8 +1,7 @@
-package bbs.board.dto.response;
+package bbs.board.category.dto;
 
-import bbs.board.domain.Category;
+import bbs.board.category.entity.Category;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,15 +15,17 @@ import java.util.List;
  */
 @NoArgsConstructor @AllArgsConstructor
 @Getter
-public class CategoryResponseDTO {
+public class CategoryDTO {
 
+    private Long categoryId;
     private String categoryName;
     private Integer categoryDepths;
-    private List<CategoryResponseDTO> subCategories = new ArrayList<>();
+    private List<CategoryDTO> subCategories = new ArrayList<>();
 
-    public CategoryResponseDTO(Category category) {
+    public CategoryDTO(Category category) {
+        this.categoryId = category.getId();
         this.categoryName = category.getCategoryName();
         this.categoryDepths = category.getCategoryDepths();
-        this.subCategories = category.getSubCategories().stream().map(CategoryResponseDTO::new).toList();
+        this.subCategories = category.getSubCategories().stream().map(CategoryDTO::new).toList();
     }
 }

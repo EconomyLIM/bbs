@@ -16,6 +16,7 @@ public enum ErrorCode {
     , ALREADY_LIKE_BOARD(400, "이미 추천/비추천 한 게시물입니다.")
     , BAD_REQUEST(400, "잘못된 요청입니다.")
     , NOT_FOUND(404, "페이지를 찾을 수 없습니다.")
+    , NOT_USER_FOUND(404, "사용자를 찾을 수 없습니다.")
     , INTERNAL_ERROR(500, "내부 서버 오류")
 
     ;

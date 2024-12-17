@@ -29,7 +29,7 @@ public class Member {
     private String password;
     private String username;
     private String nickname;
-    private Integer point;
+    private int point;
 
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
@@ -64,5 +64,13 @@ public class Member {
         if (email == null || password == null) {
             throw new CustomException(ErrorCode.ID_PASSWORD_NOT_NULL);
         }
+    }
+
+    public void addPoint(){
+        this.point += 5;
+    }
+
+    public void deletePoint(){
+        this.point -= 5;
     }
 }

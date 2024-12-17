@@ -32,8 +32,9 @@ public class RefreshTokenService {
     }
 
     public RefreshToken createRefreshToken(String email) {
-        Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+        Member findMember = memberRepository
+                            .findByEmail(email)
+                            .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
 
         RefreshToken refreshToken = new RefreshToken(
                 findMember,
@@ -49,6 +50,10 @@ public class RefreshTokenService {
      */
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
+    }
+
+    public RefreshToken findRefreshTokenByEmail(String email) {
+        return refreshTokenRepository.findByEmail(email).orElse(null);
     }
 
     /**

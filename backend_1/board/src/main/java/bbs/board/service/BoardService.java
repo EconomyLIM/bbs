@@ -1,5 +1,7 @@
 package bbs.board.service;
 
+import bbs.board.category.entity.Category;
+import bbs.board.category.repository.CategoryRepository;
 import bbs.board.domain.Board;
 import bbs.board.domain.BoardRecommendation;
 import bbs.board.domain.Member;
@@ -40,21 +42,31 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final BoardRecommendationRepository boardRecommendationRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public BoardSaveBasicResponse save (BoardRegisterRequestDTO boardRequestDTO) {
         Member findMember = memberRepository.findByEmail(boardRequestDTO.getMemberEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_USER_FOUND));
 
-        Board savedBoard = boardRepository.save(new Board(boardRequestDTO, findMember));
+        findMember.addPoint();
+
+        Category findCategory = categoryRepository.findById(boardRequestDTO.getCategoryId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        Board savedBoard = boardRepository.save(new Board(boardRequestDTO, findMember, findCategory));
         return BoardSaveBasicResponse.of(savedBoard.getId());
     }
 
     @Transactional
     public BoardSaveBasicResponse update (Long id, BoardUpdateRequestDTO boardRequestDTO) {
+//        Board findBoard = boardRepository
+//                .findById(id)
+//                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
         Board findBoard = boardRepository
-                .findById(id)
+                .findJoinFetchBoardById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
         findBoard.update(boardRequestDTO);
         return BoardSaveBasicResponse.of(findBoard.getId());
     }
@@ -69,13 +81,19 @@ public class BoardService {
             throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
         }
 
+        findBoard.getMember().deletePoint();
+
         boardRepository.delete(findBoard);
         return BasicResponse.of();
     }
 
     public BoardFindByIdBasicResponse findById(final Long id, final AuthPrincipalMemberDTO memberDto) {
+//        Board board = boardRepository
+//                .findById(id)
+//                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
+
         Board board = boardRepository
-                .findById(id)
+                .findJoinFetchBoardById(id)
                 .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
 
         String email = null;

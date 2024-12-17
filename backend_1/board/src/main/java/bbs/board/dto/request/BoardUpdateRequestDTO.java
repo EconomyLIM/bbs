@@ -1,8 +1,7 @@
 package bbs.board.dto.request;
 
-import bbs.board.domain.Category;
+import bbs.board.category.entity.Category;
 import bbs.board.domain.Keyword;
-import bbs.board.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

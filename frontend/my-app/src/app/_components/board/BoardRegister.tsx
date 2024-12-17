@@ -1,13 +1,16 @@
 "use client"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getBoardRegister} from "@service/boardService";
 import {BoardRegisterRequest} from "@/app/_type/board/BoardRequestResponse";
 import {useRouter} from "next/navigation";
+import {Category} from "@/app/_type/category/CategoryRequestResponse";
+import {getCategoryList} from "@service/CategoryService";
 
 const defaultValue = {
     title: '',
-    content: '',
-    memberEmail: "test@test.com"
+    content: '여기에 본문을 입력하거나 편집 기능을 사용할 수 있습니다.',
+    memberEmail: "test@test.com",
+    categoryId: ''
 }
 export function BoardRegister(){
 
@@ -15,14 +18,20 @@ export function BoardRegister(){
     const [boardRegisterForm, setBoardRegisterForm] = useState<BoardRegisterRequest>({
         ...defaultValue
     });
+    const [categoryList, setCategoryList] = useState<Category[]>([]);
 
-    const handle = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    useEffect(() => {
+        getCategoryListApi();
+    }, []);
+
+    const handle = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setBoardRegisterForm((prevForm) => ({
             ...prevForm,
             [name]: value,
         }));
     };
+
     const boardRegisterAPI = async () => {
         const boardRegister = await getBoardRegister(boardRegisterForm);
 
@@ -30,20 +39,31 @@ export function BoardRegister(){
             router.push(`/board/${boardRegister.boardId}`);
         }
     };
+
+
+    const getCategoryListApi = async () => {
+        const categoryListResponse = await getCategoryList();
+
+        if (categoryListResponse.code === 'OK'){
+            setCategoryList(categoryListResponse.categories);
+        }
+    };
+
     return(
         <>
             <main>
                 <div className="editor-container">
                     <div className="category-select">
                         <label htmlFor="category">카테고리:</label>
-                        <select id="category">
-                            <option value="general">일반</option>
-                            <option value="news">뉴스</option>
-                            <option value="qna">Q&A</option>
-                            <option value="tips">팁/노하우</option>
+                        <select id="categoryId" name={"categoryId"} onChange={(e)=>{handle(e)}}>
+                            <option value="">-- 카테고리 선택 --</option>
+                            {categoryList.map((category) => (
+                                <option key={category.categoryName} value={category.categoryId}>
+                                    {category.categoryName}
+                                </option>
+                            ))}
                         </select>
                     </div>
-
                     <div className="post-title">
                         <input type="text" value={boardRegisterForm.title} id="title" name={"title"}
                                onChange={handle} placeholder="글 제목을 입력하세요"/>
@@ -70,9 +90,10 @@ export function BoardRegister(){
                         <button type="button" id="insertImageBtn">이미지 삽입</button>
                     </div>
 
-                    <div className="editor" >
-                        <textarea value={boardRegisterForm.content} name={"content"} id={"content"} onChange={handle} style={{width:'100%', height:'500px'}}>
-                        여기에 본문을 입력하거나 편집 기능을 사용할 수 있습니다.
+                    <div className="editor">
+                        <textarea value={boardRegisterForm.content} name={"content"} id={"content"} onChange={handle}
+                                  style={{width: '100%', height: '500px'}}>
+
                         </textarea>
                     </div>
 

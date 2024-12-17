@@ -62,6 +62,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5' // runtime
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // for Jackson parser
 
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

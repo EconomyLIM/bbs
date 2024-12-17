@@ -1,6 +1,6 @@
-package bbs.board.repository;
+package bbs.board.category.repository;
 
-import bbs.board.domain.Category;
+import bbs.board.category.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query("select distinct c from Category c join fetch c.subCategories")
+    @Query("select distinct c from Category c left join fetch c.subCategories")
     public List<Category> findAllBy();
 }

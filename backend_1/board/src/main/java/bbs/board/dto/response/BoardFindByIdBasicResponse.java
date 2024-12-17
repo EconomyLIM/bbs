@@ -5,6 +5,9 @@ import bbs.board.dto.BoardDTO;
 import bbs.board.dto.common.BasicResponse;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * date           : 2024-12-03
  * created by     : 임경재
@@ -28,8 +31,12 @@ public class BoardFindByIdBasicResponse extends BasicResponse {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .memberEmail(board.getMember().getEmail())
+                .nickname(board.getMember().getNickname())
                 .likedCnt(board.getLikedCnt())
                 .isMine(board.getMember().getEmail().equals(currentLoginEmail))
+                .categoryId(board.getCategory().getId())
+                .categoryName(board.getCategory().getCategoryName())
+                .registeredDate(board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
 
        return new BoardFindByIdBasicResponse(boardDTO);

@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 import {Board} from "@/app/_type/board/BoardRequestResponse";
 import {getBoardList} from "@service/boardService";
 
+const PAGE_SIZE = 10; // 한 페이지에 보여줄 페이지 수
 
 export function BoardList(){
 
@@ -13,26 +14,39 @@ export function BoardList(){
     const router = useRouter();
 
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalPages, setTotalPages] = useState<number>(10)
+    const [totalPages, setTotalPages] = useState<number>(1);
 
     const boardListAPI = async () => {
         const getList = await getBoardList({page: currentPage});
         setBoardList(getList.list); // 데이터 설정
         setTotalPages(getList.totalPage);
-
-    };
-
-    // useEffect(() => {
-    //     boardListAPI();
-    // }, []);
-
-    const handlePageChange = (pageNum: number) => {
-        setCurrentPage(pageNum); // 현재 페이지 변경
     };
 
     useEffect(() => {
         boardListAPI();
     }, [currentPage]);
+
+    /**
+     * 페이징 관련
+     */
+
+        // 페이지 그룹 계산
+    const currentGroup = Math.ceil(currentPage / PAGE_SIZE); // 현재 페이지 그룹
+    const startPage = (currentGroup - 1) * PAGE_SIZE + 1; // 그룹 시작 페이지
+    const endPage = Math.min(currentGroup * PAGE_SIZE, totalPages); // 그룹 끝 페이지
+
+    // 페이지 이동 이벤트
+    const handlePageChange = (pageNum: number) => {
+        setCurrentPage(pageNum);
+    };
+
+    const handlePrevGroup = () => {
+        setCurrentPage((currentGroup - 1) * PAGE_SIZE);
+    };
+
+    const handleNextGroup = () => {
+        setCurrentPage(currentGroup * PAGE_SIZE + 1);
+    };
 
     const handleRowClick = (id: number) => {
         router.push(`/board/${id}`); // 클릭 시 페이지 이동
@@ -67,12 +81,12 @@ export function BoardList(){
                                 <div className="forum-info">
                                     <h3>{board.title}</h3>
                                     {/*<p>{board.description}</p>*/}
-                                    <span>여기에 뭐넣지?</span>
+                                    <span>{board.categoryName}</span>
                                     {/*<a href="#" className="read-more">Read more</a>*/}
                                 </div>
                                 <div className="forum-stats">
                                     {/*<span>{board.topics} Topics</span>*/}
-                                    {/*<span>{board.posts} Posts</span>*/}
+                                    <span>{board.registeredDate}</span>
                                     <span>{board.nickname}</span>
                                     {/*<span>추천수:</span>*/}
                                 </div>
@@ -85,36 +99,50 @@ export function BoardList(){
                     ))}
                 </section>
 
-                {/*<aside className="sidebar-right">*/}
-                {/*    <div className="recent-topics">*/}
-                {/*        <h4>Recent Topics</h4>*/}
-                {/*        <ul>*/}
-                {/*            <li>ceshiyigezhuti</li>*/}
-                {/*            <li>aaaaaaaaaaaaaaaaaa</li>*/}
-                {/*            <li>test</li>*/}
-                {/*            <li>mmmmmmmmmmmmm</li>*/}
-                {/*            <li>test4</li>*/}
-                {/*        </ul>*/}
-
-                {/*        <div className="footer-links">*/}
-                {/*            <a href="#">Home</a>*/}
-                {/*            <a href="#">About Us</a>*/}
-                {/*            <a href="#">FAQs</a>*/}
-                {/*            <a href="#">Blog</a>*/}
-                {/*            <a href="#">Contact</a>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</aside>*/}
-
                 <div className="pagination">
-                    {currentPage != 1 && <button>«</button>}
+                    {/* << 버튼 */}
+                    {currentGroup > 1 && (
+                        <button onClick={handlePrevGroup}>«</button>
+                    )}
 
-                    <button className="active">1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>»</button>
+                    {/* 페이지 번호 버튼 */}
+                    {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+                        <button
+                            key={startPage + i}
+                            onClick={() => handlePageChange(startPage + i)}
+                            className={currentPage === startPage + i ? "active" : ""}
+                        >
+                            {startPage + i}
+                        </button>
+                    ))}
+
+                    {/* >> 버튼 */}
+                    {totalPages > currentGroup * PAGE_SIZE && (
+                        <button onClick={handleNextGroup}>»</button>
+                    )}
                 </div>
             </main>
         </>
     );
 }
+
+{/*<aside className="sidebar-right">*/}
+{/*    <div className="recent-topics">*/}
+{/*        <h4>Recent Topics</h4>*/}
+{/*        <ul>*/}
+{/*            <li>ceshiyigezhuti</li>*/}
+{/*            <li>aaaaaaaaaaaaaaaaaa</li>*/}
+{/*            <li>test</li>*/}
+{/*            <li>mmmmmmmmmmmmm</li>*/}
+{/*            <li>test4</li>*/}
+{/*        </ul>*/}
+
+{/*        <div className="footer-links">*/}
+{/*            <a href="#">Home</a>*/}
+{/*            <a href="#">About Us</a>*/}
+{/*            <a href="#">FAQs</a>*/}
+{/*            <a href="#">Blog</a>*/}
+{/*            <a href="#">Contact</a>*/}
+{/*        </div>*/}
+{/*    </div>*/}
+{/*</aside>*/}

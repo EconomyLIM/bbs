@@ -1,6 +1,6 @@
 package bbs.board.domain;
 
-import bbs.board.dto.BoardDTO;
+import bbs.board.category.entity.Category;
 import bbs.board.dto.common.BoardRecommendationType;
 import bbs.board.dto.request.BoardLikedDTO;
 import bbs.board.dto.request.BoardRegisterRequestDTO;
@@ -75,7 +75,7 @@ public class Board extends BaseEntity {
         comment.setBoard(this);
     }
 
-    public Board(BoardRegisterRequestDTO boardRequestDTO, Member member) {
+    public Board(BoardRegisterRequestDTO boardRequestDTO, Member member, Category category) {
         this.title = boardRequestDTO.getTitle();
         this.content = boardRequestDTO.getContent();
         List<Keyword> keywords = boardRequestDTO.getKeywords();
@@ -86,7 +86,7 @@ public class Board extends BaseEntity {
         }
         this.keywords = keywords;
         this.member = member;
-        this.category = boardRequestDTO.getCategory();
+        this.category = category;
         this.likedCnt = 0;
         this.nickname = boardRequestDTO.getNickname();
     }
