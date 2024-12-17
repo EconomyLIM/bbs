@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,8 +26,6 @@ public class CommentRepository {
     }
 
     public List<Comment> getCommentsInBoard(Board board){
-//        return em.createQuery("select c from Comment c where c.board = :board", Comment.class)
-//                .setParameter("board", board).getResultList();
 
         return em.createQuery(
                         "select c from Comment c " +
@@ -38,5 +37,9 @@ public class CommentRepository {
 
     public void deleteComment(Comment comment){
         em.remove(comment);
+    }
+
+    public Comment findById(long id){
+        return em.find(Comment.class, id);
     }
 }

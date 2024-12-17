@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * date           : 2024-12-11
  * created by     : 임경재
@@ -38,7 +40,12 @@ public class CommentService {
         Board findBoard = boardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
 
-        Comment comment = new Comment(findMember, findBoard, request);
+        Comment findParentComment = null;
+        if (request.getParentCommentId() != null) {
+            findParentComment = commentRepository.findById(request.getParentCommentId());
+        }
+
+        Comment comment = new Comment(findMember, findBoard, request, findParentComment);
 
         commentRepository.save(comment);
         request.setCommentId(comment.getId());
@@ -49,6 +56,7 @@ public class CommentService {
     public FindCommentByBoardBasicResponse findByBoard(FindCommentByBoardRequest request) {
         Board findBoard = boardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
-        return FindCommentByBoardBasicResponse.of(commentRepository.findByBoard(findBoard));
+        List<Comment> commentsInBoard = commentRepository.getCommentsInBoard(findBoard);
+        return FindCommentByBoardBasicResponse.of(commentsInBoard);
     }
 }

@@ -17,6 +17,7 @@ export function BoardDetail({ id }: BoardDetailProps) {
     const [comments, setComments] = useState<Comments[]>([]);
     const [newComment, setNewComment] = useState<string>('');
     const [openReplies, setOpenReplies] = useState<Record<string, boolean>>({});
+    const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
     const router = useRouter();
 
     const getCommentAPI = async () => {
@@ -47,7 +48,6 @@ export function BoardDetail({ id }: BoardDetailProps) {
 
     const updateLikes = async (id: string, isLike: boolean) => {
         const requestObj: BoardLikedRequest = {
-            memberEmail: 'test@test.com',
             boardId: id.toString(),
             recommendationType: isLike ? "LIKE" : "DISLIKE",
         };
@@ -67,18 +67,22 @@ export function BoardDetail({ id }: BoardDetailProps) {
      */
     const addComment = async () => {
         const obj= {
-            boardId: id
-            , commentContent: newComment
+            boardId: id,
+            memberEmail: "test@test.com",
+            commentId: "", // 신규 등록 시 빈값 혹은 없는 형태로
+            commentContent: newComment,
         } as SaveCommentRequest;
 
         const getComment = await saveComment(obj);
         if (getComment.code === "OK"){
+            setNewComment('');
             getCommentAPI();
+        } else {
+            alert(getComment.message);
         }
     }
 
     const toggleReplies = (commentId: string) => {
-
         setOpenReplies((prev) => ({
             ...prev,
             [commentId.toString()]: !prev[commentId.toString()],
@@ -95,6 +99,30 @@ export function BoardDetail({ id }: BoardDetailProps) {
             }else{
                 alert(deleteApi.message);
             }
+        }
+    }
+
+    const addReply = async (parentCommentId: string) => {
+        const replyContent = replyInputs[parentCommentId] || "";
+        if (!replyContent.trim()) {
+            alert("대댓글을 입력해주세요");
+            return;
+        }
+
+        const obj = {
+            boardId: id,
+            parentCommentId: parentCommentId,
+            commentContent: replyContent
+        } as SaveCommentRequest;
+
+        const response = await saveComment(obj);
+        if (response.code === "OK"){
+            // 댓글 목록 다시 가져오기
+            getCommentAPI();
+            // 해당 대댓글 입력 값 초기화
+            setReplyInputs((prev) => ({ ...prev, [parentCommentId]: '' }));
+        } else {
+            alert(response.message);
         }
     }
 
@@ -143,7 +171,7 @@ export function BoardDetail({ id }: BoardDetailProps) {
                             {openReplies[comment.commentId.toString()] && (
                                 <div className="replies">
                                     {/* 대댓글 목록 */}
-                                    {comment.childComment && comment.childComment.map((reply) => (
+                                    {comment.childComments && comment.childComments.map((reply) => (
                                         <div className="reply" id={`reply-${reply.commentId}`} key={reply.commentId}>
                                             <div className="comment-author">{reply.nickname}</div>
                                             <div className="comment-meta">{reply.registered}</div>
@@ -157,8 +185,15 @@ export function BoardDetail({ id }: BoardDetailProps) {
                                     ))}
                                     {/* 대댓글 입력 폼 */}
                                     <div className="reply-form">
-                                        <input type="text" placeholder="대댓글 입력" />
-                                        <button type="button">등록</button>
+                                        <input
+                                            type="text"
+                                            placeholder="대댓글 입력"
+                                            value={replyInputs[comment.commentId] || ''}
+                                            onChange={(e) =>
+                                                setReplyInputs((prev) => ({ ...prev, [comment.commentId]: e.target.value }))
+                                            }
+                                        />
+                                        <button type="button" onClick={() => addReply(comment.commentId)}>등록</button>
                                     </div>
                                 </div>
                             )}

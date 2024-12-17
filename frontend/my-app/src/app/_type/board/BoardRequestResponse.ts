@@ -73,7 +73,6 @@ export interface BoardDeleteRequest{
  */
 
 export interface BoardLikedRequest {
-    memberEmail: string
-    , boardId: string
+     boardId: string
     , recommendationType : "LIKE" | "DISLIKE"
 }

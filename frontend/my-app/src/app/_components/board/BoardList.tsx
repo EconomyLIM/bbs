@@ -48,10 +48,6 @@ export function BoardList(){
         setCurrentPage(currentGroup * PAGE_SIZE + 1);
     };
 
-    const handleRowClick = (id: number) => {
-        router.push(`/board/${id}`); // 클릭 시 페이지 이동
-    };
-
     return (
         <>
             <header>

@@ -51,11 +51,16 @@ public class Comment extends BaseEntity {
         this.commentContent = request.getCommentContent();
     }
 
-    public Comment(final Member findMember, final Board findBoard, final SaveCommentRequest request) {
+    public Comment(final Long id) {
+        this.id = id;
+    }
+
+    public Comment(final Member findMember, final Board findBoard, final SaveCommentRequest request, final Comment parentComment) {
         this.member = findMember;
         this.board = findBoard;
-        if (request.getParentComment() != null && request.getParentComment().getCommentId() != null) {
-            this.parentComment = new Comment(request.getParentComment());
+        if (parentComment != null) {
+            this.parentComment = parentComment;
+            parentComment.getReplies().add(this);
         }
         this.commentContent = request.getCommentContent();
     }

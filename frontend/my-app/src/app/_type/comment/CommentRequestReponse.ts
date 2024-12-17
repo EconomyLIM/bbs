@@ -4,13 +4,14 @@
 import {ApiResponse} from "@/app/_type/CommonResponse";
 
 export interface Comments {
-    commentId: bigint
+    commentId: string
+    , parentCommentId: string
     , commentContent: string
     , memberEmail: string
     , nickname: string
     , registered: string
     , likedCnt: number
-    , childComment: Comments[]
+    , childComments: Comments[]
 }
 
 export interface FindCommentByBoardResponse extends ApiResponse{
@@ -20,8 +21,8 @@ export interface FindCommentByBoardResponse extends ApiResponse{
 export interface SaveCommentRequest{
     boardId: string
     , memberEmail: string
-    , commentId?: bigint
-    , parentComment?: Comments | null
+    , commentId: string
+    , parentCommentId?: string | null
     , commentContent: string
 }
 

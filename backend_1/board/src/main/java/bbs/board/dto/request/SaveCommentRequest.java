@@ -14,6 +14,6 @@ public class SaveCommentRequest {
     private Long boardId;
     private String memberEmail;
     private Long commentId;
-    private SaveCommentRequest parentComment;
+    private Long parentCommentId;
     private String commentContent;
 }
