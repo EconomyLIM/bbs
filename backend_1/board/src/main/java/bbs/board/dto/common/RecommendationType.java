@@ -5,6 +5,6 @@ package bbs.board.dto.common;
  * created by     : 임경재
  * description    :
  */
-public enum BoardRecommendationType {
+public enum RecommendationType {
     LIKE, DISLIKE
 }

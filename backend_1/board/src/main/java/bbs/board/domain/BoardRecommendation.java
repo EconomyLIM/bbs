@@ -1,8 +1,7 @@
 package bbs.board.domain;
 
-import bbs.board.dto.common.BoardRecommendationType;
+import bbs.board.dto.common.RecommendationType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 /**
@@ -27,9 +26,9 @@ public class BoardRecommendation {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private BoardRecommendationType recommendType;
+    private RecommendationType recommendType;
 
-    public BoardRecommendation(Member member, Board board, BoardRecommendationType recommendationType) {
+    public BoardRecommendation(Member member, Board board, RecommendationType recommendationType) {
         this.member = member;
         this.board = board;
         this.recommendType = recommendationType;

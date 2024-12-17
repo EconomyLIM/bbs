@@ -1,7 +1,8 @@
 package bbs.board.domain;
 
 import bbs.board.category.entity.Category;
-import bbs.board.dto.common.BoardRecommendationType;
+import bbs.board.comment.entity.Comment;
+import bbs.board.dto.common.RecommendationType;
 import bbs.board.dto.request.BoardLikedDTO;
 import bbs.board.dto.request.BoardRegisterRequestDTO;
 import bbs.board.dto.request.BoardUpdateRequestDTO;
@@ -61,8 +62,8 @@ public class Board extends BaseEntity {
     }
 
     public void updatedLiked(BoardLikedDTO boardLikedDTO){
-        BoardRecommendationType recommendationType = boardLikedDTO.getRecommendationType();
-        if (recommendationType == BoardRecommendationType.LIKE){
+        RecommendationType recommendationType = boardLikedDTO.getRecommendationType();
+        if (recommendationType == RecommendationType.LIKE){
             likedCnt += 1;
         }else{
             likedCnt -= 1;

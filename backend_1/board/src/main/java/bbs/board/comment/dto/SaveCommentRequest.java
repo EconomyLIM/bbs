@@ -1,4 +1,4 @@
-package bbs.board.dto.request;
+package bbs.board.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

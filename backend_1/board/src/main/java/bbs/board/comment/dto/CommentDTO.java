@@ -1,9 +1,9 @@
-package bbs.board.dto.response;
+package bbs.board.comment.dto;
 
-import bbs.board.domain.Comment;
+import bbs.board.comment.entity.Comment;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -18,6 +18,8 @@ public class CommentDTO {
     private String memberEmail;
     private String nickname;
     private String registered;
+    private boolean mine;
+    private int likedCnt;
     private List<CommentDTO> childComments;
 
     public CommentDTO(Comment comment) {
@@ -27,5 +29,8 @@ public class CommentDTO {
         if (comment.getReplies() != null && !comment.getReplies().isEmpty()) {
             this.childComments = comment.getReplies().stream().map(CommentDTO::new).toList();
         }
+        this.nickname = comment.getMember().getNickname();
+        this.registered = comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.likedCnt = comment.getLikedCnt();
     }
 }

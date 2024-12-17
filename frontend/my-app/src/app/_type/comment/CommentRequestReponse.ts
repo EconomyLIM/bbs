@@ -12,6 +12,7 @@ export interface Comments {
     , registered: string
     , likedCnt: number
     , childComments: Comments[]
+    , mine: boolean
 }
 
 export interface FindCommentByBoardResponse extends ApiResponse{

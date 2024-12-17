@@ -46,7 +46,7 @@ export function BoardDetail({ id }: BoardDetailProps) {
         return <div>Loading...</div>;
     }
 
-    const updateLikes = async (id: string, isLike: boolean) => {
+    const boardUpdateLikes = async (id: string, isLike: boolean) => {
         const requestObj: BoardLikedRequest = {
             boardId: id.toString(),
             recommendationType: isLike ? "LIKE" : "DISLIKE",
@@ -130,6 +130,13 @@ export function BoardDetail({ id }: BoardDetailProps) {
         router.push(`/board/${id}/update`);
     }
 
+    const commentUpdateLikes = async (commentId: string, isLike: boolean) => {
+        const requestObj: BoardLikedRequest = {
+            boardId: commentId,
+            recommendationType: isLike ? "LIKE" : "DISLIKE",
+        };
+    }
+
     return (
         <>
             <main>
@@ -147,9 +154,9 @@ export function BoardDetail({ id }: BoardDetailProps) {
                         {board.content}
                     </div>
                     <div className="like-dislike" data-id="post" data-type="post">
-                        <button className="like-btn" onClick={() => updateLikes(board.id, true)}>👍</button>
+                        <button className="like-btn" onClick={() => boardUpdateLikes(board.id, true)}>👍</button>
                         <span className="like-count">{board.likedCnt}</span>
-                        <button className="dislike-btn" onClick={() => updateLikes(board.id, false)}>👎</button>
+                        <button className="dislike-btn" onClick={() => boardUpdateLikes(board.id, false)}>👎</button>
                     </div>
                 </div>
 
@@ -157,16 +164,22 @@ export function BoardDetail({ id }: BoardDetailProps) {
                     <h2>댓글</h2>
                     {comments.map(comment => (
                         <div className="comment" id={`comment-${comment.commentId}`} key={comment.commentId.toString()}>
-                            <div className="comment-author">{comment.memberEmail}</div>
-                            <div className="comment-meta">작성일이 들어갈자리</div>
+                            <div className="comment-author">{comment.nickname}</div>
+                            <div className="comment-meta">{comment.registered}</div>
                             <div className="comment-content">
                                 {comment.commentContent}
                             </div>
                             <div className="like-dislike" data-id="comment-1" data-type="comment">
-                                <button className="like-btn">👍</button>
-                                <span className="like-count">0</span>
-                                <button className="dislike-btn">👎</button>
+                                <button className="like-btn" onClick={()=>{commentUpdateLikes(comment.commentId, true)}}>👍</button>
+                                <span className="like-count">{comment.likedCnt}</span>
+                                <button className="dislike-btn" onClick={()=>{commentUpdateLikes(comment.commentId, false)}}>👎</button>
                             </div>
+                            {comment.mine &&
+                                <div className="post-actions">
+                                    <button className="edit-btn">수정</button>
+                                    <button className="delete-btn">삭제</button>
+                                </div>
+                            }
                             <button className="comment-actions" onClick={() => toggleReplies(comment.commentId.toString())} >답글</button>
                             {openReplies[comment.commentId.toString()] && (
                                 <div className="replies">
@@ -176,10 +189,16 @@ export function BoardDetail({ id }: BoardDetailProps) {
                                             <div className="comment-author">{reply.nickname}</div>
                                             <div className="comment-meta">{reply.registered}</div>
                                             <div className="comment-content">{reply.commentContent}</div>
+                                            {reply.mine &&
+                                                <div className="post-actions">
+                                                    <button className="edit-btn">수정</button>
+                                                    <button className="delete-btn">삭제</button>
+                                                </div>
+                                            }
                                             <div className="like-dislike" data-id={`reply-${reply.commentId}`} data-type="comment">
-                                                <button className="like-btn">👍</button>
-                                                <span className="like-count">0</span>
-                                                <button className="dislike-btn">👎</button>
+                                                <button className="like-btn" onClick={()=>{commentUpdateLikes(reply.commentId, true)}}>👍</button>
+                                                <span className="like-count">{reply.likedCnt}</span>
+                                                <button className="dislike-btn" onClick={()=>{commentUpdateLikes(reply.commentId, false)}}>👎</button>
                                             </div>
                                         </div>
                                     ))}

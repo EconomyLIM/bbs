@@ -1,16 +1,18 @@
-package bbs.board.service;
+package bbs.board.comment.service;
 
+import bbs.board.comment.dto.CommentRecommendationRequest;
+import bbs.board.comment.entity.CommentRecommendation;
 import bbs.board.domain.Board;
-import bbs.board.domain.Comment;
+import bbs.board.comment.entity.Comment;
 import bbs.board.domain.Member;
 import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.request.FindCommentByBoardRequest;
-import bbs.board.dto.request.SaveCommentRequest;
-import bbs.board.dto.response.FindCommentByBoardBasicResponse;
+import bbs.board.comment.dto.SaveCommentRequest;
+import bbs.board.comment.dto.FindCommentByBoardBasicResponse;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
 import bbs.board.repository.BoardRepository;
-import bbs.board.repository.CommentRepository;
+import bbs.board.comment.repository.CommentRepository;
 import bbs.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,10 +55,18 @@ public class CommentService {
     }
 
     @Transactional
-    public FindCommentByBoardBasicResponse findByBoard(FindCommentByBoardRequest request) {
+    public FindCommentByBoardBasicResponse findByBoard(final FindCommentByBoardRequest request, final String memberEmail) {
+
         Board findBoard = boardRepository.findById(request.getBoardId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+
         List<Comment> commentsInBoard = commentRepository.getCommentsInBoard(findBoard);
-        return FindCommentByBoardBasicResponse.of(commentsInBoard);
+
+        return FindCommentByBoardBasicResponse.of(commentsInBoard, memberEmail);
+    }
+
+    @Transactional
+    public void likedComment(CommentRecommendationRequest request){
+        CommentRecommendation findCommentRecommendation = commentRepository.findByEmailAndBoard(request.getMemberEmail(), request.getCommentId());
     }
 }

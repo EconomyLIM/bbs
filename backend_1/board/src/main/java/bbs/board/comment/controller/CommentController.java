@@ -1,12 +1,12 @@
-package bbs.board.controller;
+package bbs.board.comment.controller;
 
 import bbs.board.dto.AuthPrincipalMemberDTO;
 import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.request.FindCommentByBoardRequest;
-import bbs.board.dto.request.SaveCommentRequest;
-import bbs.board.dto.response.CommentDTO;
-import bbs.board.dto.response.FindCommentByBoardBasicResponse;
-import bbs.board.service.CommentService;
+import bbs.board.comment.dto.SaveCommentRequest;
+import bbs.board.comment.dto.CommentDTO;
+import bbs.board.comment.dto.FindCommentByBoardBasicResponse;
+import bbs.board.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,7 @@ public class CommentController {
     public ResponseEntity<BasicResponse> saveComment(
             @RequestBody final SaveCommentRequest comment
             , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto) {
+
         comment.setMemberEmail(memberDto.getEmail());
         return ResponseEntity.ok(commentService.save(comment));
     }
@@ -39,16 +40,12 @@ public class CommentController {
     }
 
     @GetMapping("/comment")
-    public ResponseEntity<FindCommentByBoardBasicResponse> findCommentByBoard(final FindCommentByBoardRequest request) {
-        FindCommentByBoardBasicResponse response = commentService.findByBoard(request);
-        log.info("response: {}", response);
-        if (response != null) {
-            if (response.getComments() != null) {
-                for (CommentDTO comment : response.getComments()) {
-                    log.info("comment: {}", comment);
-                }
-            }
-        }
+    public ResponseEntity<FindCommentByBoardBasicResponse> findCommentByBoard(
+            final FindCommentByBoardRequest request
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto) {
+
+        FindCommentByBoardBasicResponse response = commentService.findByBoard(request, memberDto.getEmail());
+
         return ResponseEntity.ok(response);
     }
 }

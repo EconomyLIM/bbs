@@ -1,29 +1,21 @@
 package bbs.board.service;
 
+import bbs.board.comment.service.CommentService;
 import bbs.board.domain.Board;
-import bbs.board.domain.Comment;
 import bbs.board.domain.Member;
 import bbs.board.dto.request.FindCommentByBoardRequest;
-import bbs.board.dto.request.SaveCommentRequest;
+import bbs.board.comment.dto.SaveCommentRequest;
 import bbs.board.repository.BoardRepository;
 import bbs.board.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.Before;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * date           : 2024-12-11

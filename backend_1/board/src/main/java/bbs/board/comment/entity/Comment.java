@@ -1,13 +1,14 @@
-package bbs.board.domain;
+package bbs.board.comment.entity;
 
-import bbs.board.dto.request.SaveCommentRequest;
+import bbs.board.domain.BaseEntity;
+import bbs.board.domain.Board;
+import bbs.board.domain.Member;
+import bbs.board.comment.dto.SaveCommentRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,12 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
-    @Getter
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
-    @Getter
     private List<Comment> replies = new ArrayList<>();
+
+    private int likedCnt;
 
     public Comment(final SaveCommentRequest request) {
         this.id = request.getCommentId();

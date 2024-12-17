@@ -1,6 +1,6 @@
 package bbs.board.dto.request;
 
-import bbs.board.dto.common.BoardRecommendationType;
+import bbs.board.dto.common.RecommendationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ public class BoardLikedDTO {
     private Long memberId;
     private String memberEmail;
     private Long boardId;
-    private BoardRecommendationType recommendationType;
+    private RecommendationType recommendationType;
 }
