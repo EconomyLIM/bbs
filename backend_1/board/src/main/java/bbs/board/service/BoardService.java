@@ -124,10 +124,13 @@ public class BoardService {
         return page;
     }
 
-    public BoardListBasicResponse findAllBySearchKeyword(BoardSearchRequestDTO boardSearchRequestDTO) {
-        List<Board> boardBySearch = boardRepository.findBoardBySearch(boardSearchRequestDTO);
+    public BoardListBasicResponse findAllBySearchKeyword(BoardSearchRequestDTO request) {
+
+        List<Board> boardBySearch = boardRepository.findBoardBySearch(request);
+        int boardBySearchCnt = boardRepository.findBoardBySearchCnt(request);
         List<BoardResponse> list = boardBySearch.stream().map(BoardResponse::new).toList();
-        return BoardListBasicResponse.of(list, 0, 0);
+
+        return BoardListBasicResponse.of(list, request.getPage(), (boardBySearchCnt / CommonPageSizes.BOARD_PAGE_SIZE.getPageSize() ) + 1);
     }
 
 

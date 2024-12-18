@@ -1,26 +1,20 @@
 package bbs.board.controller;
 
-import bbs.board.category.entity.Category;
-import bbs.board.category.repository.CategoryRepository;
-import bbs.board.domain.Member;
 import bbs.board.dto.AuthPrincipalMemberDTO;
-import bbs.board.dto.MemberDTO;
 import bbs.board.dto.common.BasicResponse;
-import bbs.board.dto.request.*;
+import bbs.board.dto.request.BoardLikedDTO;
+import bbs.board.dto.request.BoardRegisterRequestDTO;
+import bbs.board.dto.request.BoardSearchRequestDTO;
+import bbs.board.dto.request.BoardUpdateRequestDTO;
 import bbs.board.dto.response.BoardFindByIdBasicResponse;
 import bbs.board.dto.response.BoardListBasicResponse;
 import bbs.board.dto.response.BoardSaveBasicResponse;
-import bbs.board.repository.MemberRepository;
 import bbs.board.service.BoardService;
-import bbs.board.service.LoginService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -77,33 +71,6 @@ public class BoardController {
         dto.setMemberEmail(memberDto.getEmail());
         dto.setNickname(memberDto.getNickname());
         return ResponseEntity.ok(boardService.save(dto));
-    }
-
-    private final LoginService loginService;
-    private final MemberRepository memberRepository;
-    private final CategoryRepository categoryRepository;
-    @EventListener(ApplicationReadyEvent.class)
-    @Transactional
-    public void init(){
-        Member member = new Member("test@test.com");
-        MemberDTO memberDTO = new MemberDTO(member);
-        memberDTO.setPassword(member.getPassword());
-        loginService.saveMember(memberDTO);
-
-        Category topCategory1 = new Category("야구", 1);
-        Category topCategory2 = new Category("축구", 1);
-        Category topCategory3 = new Category("배드민턴", 1);
-        Category topCategory4 = new Category("탁구", 1);
-
-        categoryRepository.save(topCategory1);
-        categoryRepository.save(topCategory2);
-        categoryRepository.save(topCategory3);
-        categoryRepository.save(topCategory4);
-
-        for (int i = 0; i < 210; i++) {
-            BoardRegisterRequestDTO requestDTO = new BoardRegisterRequestDTO("title" + i, "content" + i, member.getEmail(), member.getNickname(), 1L);
-            boardService.save(requestDTO);
-        }
     }
 
     @PostMapping("/board/liked")

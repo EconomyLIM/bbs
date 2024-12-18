@@ -1,14 +1,13 @@
 package bbs.board.comment.service;
 
-import bbs.board.comment.dto.CommentRecommendationRequest;
+import bbs.board.comment.dto.*;
 import bbs.board.comment.entity.CommentRecommendation;
+import bbs.board.comment.repository.CommentRecommendationRepository;
 import bbs.board.domain.Board;
 import bbs.board.comment.entity.Comment;
 import bbs.board.domain.Member;
 import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.request.FindCommentByBoardRequest;
-import bbs.board.comment.dto.SaveCommentRequest;
-import bbs.board.comment.dto.FindCommentByBoardBasicResponse;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
 import bbs.board.repository.BoardRepository;
@@ -33,6 +32,8 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final CommentRecommendationRepository recommendationRepository;
+    private final CommentRecommendationRepository commentRecommendationRepository;
 
     @Transactional
     public BasicResponse save(SaveCommentRequest request) {
@@ -44,7 +45,8 @@ public class CommentService {
 
         Comment findParentComment = null;
         if (request.getParentCommentId() != null) {
-            findParentComment = commentRepository.findById(request.getParentCommentId());
+            findParentComment = commentRepository.findById(request.getParentCommentId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
         }
 
         Comment comment = new Comment(findMember, findBoard, request, findParentComment);
@@ -67,6 +69,45 @@ public class CommentService {
 
     @Transactional
     public void likedComment(CommentRecommendationRequest request){
-        CommentRecommendation findCommentRecommendation = commentRepository.findByEmailAndBoard(request.getMemberEmail(), request.getCommentId());
+        CommentRecommendation findCommentRecommendation = commentRecommendationRepository.findByEmailAndBoard(request.getMemberEmail(), request.getCommentId());
+
+        if (findCommentRecommendation != null){
+            throw new CustomException(ErrorCode.ALREADY_LIKE_COMMENT);
+        }
+
+        Member findMember = memberRepository.findByEmail(request.getMemberEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        Comment findComment = commentRepository.findById(request.getCommentId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        CommentRecommendation commentRecommendation = new CommentRecommendation(findComment, findMember, request.getRecommendationType());
+        recommendationRepository.save(commentRecommendation);
+        findComment.updateLiked(request);
+    }
+
+    @Transactional
+    public void deleteComment(CommentDeleteRequest request){
+        Comment findComment = commentRepository.findById(request.getCommentId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        if (!findComment.getMember().getEmail().equals(request.getMemberEmail())){
+            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+        }
+
+        findComment.deleteComment();
+    }
+
+    @Transactional
+    public void updateComment(CommentUpdateRequest request){
+        Comment findComment = commentRepository.findById(request.getCommentId())
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
+
+        if (!findComment.getMember().getEmail().equals(request.getMemberEmail())){
+            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+        }
+
+        findComment.update(request);
+
     }
 }

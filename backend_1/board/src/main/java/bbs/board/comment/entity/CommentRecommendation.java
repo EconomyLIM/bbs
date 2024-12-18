@@ -24,10 +24,17 @@ public class CommentRecommendation {
     @JoinColumn(name = "email", nullable = false)
     private Member member;
 
-    private LocalDateTime registeredDate = LocalDateTime.now();
+    private LocalDateTime registeredDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RecommendationType recommendationType;
 
+
+    public CommentRecommendation(final Comment comment, final Member member, RecommendationType recommendationType) {
+        this.comment = comment;
+        this.member = member;
+        this.recommendationType = recommendationType;
+        registeredDate = LocalDateTime.now();
+    }
 }

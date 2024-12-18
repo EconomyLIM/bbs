@@ -519,7 +519,7 @@ header .search-bar input {
 }
 
 header .search-bar::before {
-    content: '🔍';
+    content: '✔ ';
     margin-right: 0.5rem;
     opacity: 0.6;
 }
@@ -786,7 +786,7 @@ main {
        여기서는 요청사항에 따라 하나의 CSS 안에 정리하므로 주석 처리로 구분합니다.
        홈 페이지에서는 80% 너비로, 왼쪽 정렬 느낌 */
     width: 80%;
-    margin-left: 2rem;
+    /*margin-left: 2rem;*/
     padding: 2rem;
     flex: 1;
 }

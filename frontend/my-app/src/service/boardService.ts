@@ -10,7 +10,7 @@ import {ApiResponse} from "@/app/_type/CommonResponse";
 
 
 export const getBoardList = async (data: BoardRequest) :Promise<BoardListResponse> => {
-    return await requestApiFetch<BoardListResponse>('GET', '/board', data);
+    return await requestApiFetch<BoardListResponse>('GET', '/board/search', data);
 }
 
 export const getBoardDetail = async (data: BoardDetailRequest) :Promise<BoardDetailResponse> => {

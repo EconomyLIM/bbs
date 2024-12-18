@@ -1,11 +1,9 @@
 package bbs.board.comment.controller;
 
+import bbs.board.comment.dto.*;
 import bbs.board.dto.AuthPrincipalMemberDTO;
 import bbs.board.dto.common.BasicResponse;
 import bbs.board.dto.request.FindCommentByBoardRequest;
-import bbs.board.comment.dto.SaveCommentRequest;
-import bbs.board.comment.dto.CommentDTO;
-import bbs.board.comment.dto.FindCommentByBoardBasicResponse;
 import bbs.board.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +31,6 @@ public class CommentController {
         return ResponseEntity.ok(commentService.save(comment));
     }
 
-    @DeleteMapping
-    public ResponseEntity<BasicResponse> deleteComment(@RequestBody final SaveCommentRequest comment) {
-
-        return ResponseEntity.ok(commentService.save(comment));
-    }
-
     @GetMapping("/comment")
     public ResponseEntity<FindCommentByBoardBasicResponse> findCommentByBoard(
             final FindCommentByBoardRequest request
@@ -47,5 +39,33 @@ public class CommentController {
         FindCommentByBoardBasicResponse response = commentService.findByBoard(request, memberDto.getEmail());
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/comment")
+    public ResponseEntity<BasicResponse> deleteCommentByBoard(
+            @RequestBody final CommentDeleteRequest request
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto) {
+        request.setMemberEmail(memberDto.getEmail());
+        commentService.deleteComment(request);
+        return ResponseEntity.ok(new BasicResponse());
+    }
+
+    @PostMapping("/comment/like")
+    public ResponseEntity<BasicResponse> recommendComment(
+            @RequestBody final CommentRecommendationRequest request
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto){
+
+        request.setMemberEmail(memberDto.getEmail());
+        commentService.likedComment(request);
+        return ResponseEntity.ok(new BasicResponse());
+    }
+
+    @PatchMapping("/comment")
+    public ResponseEntity<BasicResponse> updateComment(
+            @RequestBody final CommentUpdateRequest request
+            , @AuthenticationPrincipal final AuthPrincipalMemberDTO memberDto){
+        request.setMemberEmail(memberDto.getEmail());
+        commentService.updateComment(request);
+        return ResponseEntity.ok(new BasicResponse());
     }
 }

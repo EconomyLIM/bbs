@@ -29,14 +29,32 @@ public class BoardRepositoryImpl implements BoardCustomRepository{
         return queryFactory.select(board)
                 .from(board)
                 .where(allSearch(dto))
-                .offset(dto.getPage())
+                .offset((long) (dto.getPage() - 1) * CommonPageSizes.BOARD_PAGE_SIZE.getPageSize())
                 .limit(CommonPageSizes.BOARD_PAGE_SIZE.getPageSize())
                 .fetch();
     }
 
+    @Override
+    public int findBoardBySearchCnt(final BoardSearchRequestDTO dto) {
+        Long count = queryFactory.select(board.count())
+                .from(board)
+                .where(allSearch(dto))
+                .fetchOne();
+        return count != null ? count.intValue() : 0;
+    }
+
     private BooleanBuilder allSearch(BoardSearchRequestDTO dto){
         return titleEq(dto.getTitle())
-                .and(searchEq(dto.getSearchWord()));
+                .and(searchEq(dto.getSearchWord()))
+                .and(categoryBuilder(dto.getCategoryId()));
+    }
+
+    private BooleanBuilder categoryBuilder(Long categoryId) {
+        if (categoryId == null) {
+            return new BooleanBuilder();
+        }
+
+        return new BooleanBuilder(board.category.id.eq(categoryId));
     }
 
     private BooleanBuilder titleEq(String title){
@@ -51,6 +69,6 @@ public class BoardRepositoryImpl implements BoardCustomRepository{
         if (searchWord == null){
             return new BooleanBuilder();
         }
-        return new BooleanBuilder(board.content.like(searchWord));
+        return new BooleanBuilder(board.content.like("%" + searchWord + "%"));
     }
 }

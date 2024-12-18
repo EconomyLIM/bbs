@@ -13,6 +13,7 @@ export interface Comments {
     , likedCnt: number
     , childComments: Comments[]
     , mine: boolean
+    , status: 'REGISTERED' | 'UPDATED' | 'DELETED'
 }
 
 export interface FindCommentByBoardResponse extends ApiResponse{
@@ -29,4 +30,18 @@ export interface SaveCommentRequest{
 
 export interface FindCommentByBoardRequest{
     boardId: string
+}
+
+export interface CommentLikedRequest {
+    commentId: string
+    , recommendationType : "LIKE" | "DISLIKE"
+}
+
+export interface CommentDeleteRequest {
+    commentId: string
+}
+
+export interface UpdateCommentRequest{
+    commentId: string
+    , updatedContent: string
 }

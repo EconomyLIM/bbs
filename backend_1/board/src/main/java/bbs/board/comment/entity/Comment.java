@@ -1,9 +1,12 @@
 package bbs.board.comment.entity;
 
+import bbs.board.comment.dto.CommentRecommendationRequest;
+import bbs.board.comment.dto.CommentUpdateRequest;
 import bbs.board.domain.BaseEntity;
 import bbs.board.domain.Board;
 import bbs.board.domain.Member;
 import bbs.board.comment.dto.SaveCommentRequest;
+import bbs.board.dto.common.RecommendationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +50,10 @@ public class Comment extends BaseEntity {
 
     private int likedCnt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CommentStatus status;
+
     public Comment(final SaveCommentRequest request) {
         this.id = request.getCommentId();
         this.commentContent = request.getCommentContent();
@@ -64,6 +71,7 @@ public class Comment extends BaseEntity {
             parentComment.getReplies().add(this);
         }
         this.commentContent = request.getCommentContent();
+        this.status = CommentStatus.REGISTERED;
     }
 
     public void setBoard(Board board){
@@ -74,5 +82,24 @@ public class Comment extends BaseEntity {
     @Override
     public String toString() {
         return "[" + this.id + " / " + this.commentContent + " / " + " ] ";
+    }
+
+    public void updateLiked(CommentRecommendationRequest request){
+        RecommendationType recommendationType = request.getRecommendationType();
+        if (recommendationType == RecommendationType.LIKE){
+            this.likedCnt++;
+        }else {
+            this.likedCnt--;
+        }
+    }
+
+    public void deleteComment(){
+        this.commentContent = "삭제된 댓글입니다.";
+        this.status = CommentStatus.DELETED;
+    }
+
+    public void update(final CommentUpdateRequest request) {
+        this.commentContent = request.getUpdatedContent();
+        this.status = CommentStatus.UPDATED;
     }
 }

@@ -19,6 +19,9 @@ export function BoardUpdate({ id }: BoardDetailProps) {
         memberEmail: '',
         nickname: '',
         mine: false,
+         categoryId: ''
+        , categoryName: ''
+        , registeredDate: ''
     });
     const router = useRouter();
 

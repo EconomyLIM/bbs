@@ -30,6 +30,8 @@ export interface BoardListResponse extends ApiResponse{
 
 export interface BoardRequest{
     page: number
+    , categoryId ?: string
+    , searchWord ?: string | undefined | null
 }
 
 export interface BoardDetailRequest{

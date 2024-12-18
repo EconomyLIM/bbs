@@ -3,28 +3,38 @@
 
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
-import {Board} from "@/app/_type/board/BoardRequestResponse";
+import {Board, BoardRequest} from "@/app/_type/board/BoardRequestResponse";
 import {getBoardList} from "@service/boardService";
+import {getCategoryList} from "@service/CategoryService";
+import {Category} from "@/app/_type/category/CategoryRequestResponse";
 
 const PAGE_SIZE = 10; // 한 페이지에 보여줄 페이지 수
 
 export function BoardList(){
 
     const [boardList, setBoardList] = useState<Board[]>([]);
-    const router = useRouter();
+    const [categoryList, setCategoryList] = useState<Category[]>([]);
+    const [boardRequest, setBoardRequest] = useState<BoardRequest>({
+        page: 1, // 기본값 설정
+        categoryId: undefined,
+        searchWord: undefined,
+    });
+    const [searchWord, setSearchWord] = useState<string | undefined>('');
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
 
     const boardListAPI = async () => {
-        const getList = await getBoardList({page: currentPage});
+
+        const getList = await getBoardList(boardRequest);
         setBoardList(getList.list); // 데이터 설정
         setTotalPages(getList.totalPage);
     };
 
     useEffect(() => {
         boardListAPI();
-    }, [currentPage]);
+        getCategories();
+    }, [boardRequest]);
 
     /**
      * 페이징 관련
@@ -38,35 +48,83 @@ export function BoardList(){
     // 페이지 이동 이벤트
     const handlePageChange = (pageNum: number) => {
         setCurrentPage(pageNum);
+        setBoardRequest((prev) => ({ ...prev, page: pageNum }));
     };
 
     const handlePrevGroup = () => {
         setCurrentPage((currentGroup - 1) * PAGE_SIZE);
+        setBoardRequest((prev) => ({ ...prev, page: (currentGroup - 1) * PAGE_SIZE }));
     };
 
     const handleNextGroup = () => {
         setCurrentPage(currentGroup * PAGE_SIZE + 1);
+        setBoardRequest((prev) => ({ ...prev, page:  currentGroup * PAGE_SIZE + 1 }));
     };
+
+    const getCategories = async () =>{
+        const categoryList = await getCategoryList();
+        if (categoryList.code === "OK"){
+            setCategoryList(categoryList.categories);
+        }
+    }
+
+    // 카테고리 변경 핸들러
+    const handleCategoryChange = (categoryId?: string) => {
+        setBoardRequest((prev) => ({ ...prev, categoryId, page: 1 }));
+        setCurrentPage(1);
+    };
+
+    // 검색어 변경 핸들러
+    const handleSearchChange = (searchWord: string) => {
+        setBoardRequest((prev) => ({ ...prev, searchWord }));
+    };
+
+    // 카테고리 클릭 이벤트 방지 및 상태 업데이트
+    const handleCategoryClick = (e: React.MouseEvent<HTMLAnchorElement>, categoryId?: string) => {
+        e.preventDefault(); // # 이벤트 방지
+        handleCategoryChange(categoryId);
+    };
+
+    const onChangeSearchWord = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchWord(e.target.value);
+    }
+
+    const onClickSearchWord = () => {
+        setBoardRequest((prev) => ({ ...prev, searchWord: searchWord }));
+        setCurrentPage(1);
+    }
 
     return (
         <>
-            <header>
-                <div className="search-bar">
-                    <input type="text" placeholder="Search..."/>
-                </div>
-                <a href="#" className="login">🔒 Login</a>
-            </header>
 
             <main>
                 <section className="sidebar-left">
                     <nav className="forums-nav">
-                        <a href="#" className="active">All Forums</a>
-                        <a href="#">Topics</a>
+                        <a href="#" className={boardRequest.categoryId === undefined ? "active" : ""}
+                           onClick={(e) => handleCategoryClick(e, undefined)}>
+                            All Forums
+                        </a>
+                        {categoryList &&
+                            categoryList.map((category) => (
+                                <a
+                                    className={boardRequest.categoryId === category.categoryId ? "active" : ""}
+                                    href="#"
+                                    key={`category-${category.categoryId}`}
+                                    onClick={(e) => handleCategoryClick(e, category.categoryId)}
+                                >
+                                    {category.categoryName}
+                                </a>
+                            ))}
                     </nav>
 
                     <div className="forum-search">
-                        <input type="text" placeholder="Search"/>
-                        <button>🔍</button>
+                        <input type="text" placeholder="Search" value={searchWord} onChange={(e) => {
+                            onChangeSearchWord(e)
+                        }}/>
+                        <button onClick={() => {
+                            onClickSearchWord()
+                        }}>🔍
+                        </button>
                     </div>
 
                     {/* forum-row 형식으로 게시판 리스트 렌더링 */}
@@ -102,7 +160,7 @@ export function BoardList(){
                     )}
 
                     {/* 페이지 번호 버튼 */}
-                    {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+                    {Array.from({length: endPage - startPage + 1}, (_, i) => (
                         <button
                             key={startPage + i}
                             onClick={() => handlePageChange(startPage + i)}
@@ -122,9 +180,12 @@ export function BoardList(){
     );
 }
 
-{/*<aside className="sidebar-right">*/}
-{/*    <div className="recent-topics">*/}
-{/*        <h4>Recent Topics</h4>*/}
+{/*<aside className="sidebar-right">*/
+}
+{/*    <div className="recent-topics">*/
+}
+{/*        <h4>Recent Topics</h4>*/
+}
 {/*        <ul>*/}
 {/*            <li>ceshiyigezhuti</li>*/}
 {/*            <li>aaaaaaaaaaaaaaaaaa</li>*/}

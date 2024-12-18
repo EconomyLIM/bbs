@@ -1,6 +1,7 @@
 package bbs.board.comment.dto;
 
 import bbs.board.comment.entity.Comment;
+import bbs.board.comment.entity.CommentStatus;
 import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
@@ -21,6 +22,7 @@ public class CommentDTO {
     private boolean mine;
     private int likedCnt;
     private List<CommentDTO> childComments;
+    private CommentStatus status;
 
     public CommentDTO(Comment comment) {
         this.commentId = comment.getId();
@@ -32,5 +34,6 @@ public class CommentDTO {
         this.nickname = comment.getMember().getNickname();
         this.registered = comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.likedCnt = comment.getLikedCnt();
+        this.status = comment.getStatus();
     }
 }

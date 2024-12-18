@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface BoardCustomRepository {
     List<Board> findBoardBySearch(BoardSearchRequestDTO dto);
+
+    int findBoardBySearchCnt(BoardSearchRequestDTO dto);
 }

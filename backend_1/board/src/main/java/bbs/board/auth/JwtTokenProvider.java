@@ -52,7 +52,6 @@ public class JwtTokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 
-
             return true;
         } catch (ExpiredJwtException e) {
             RefreshToken refreshToken = refreshTokenService.findRefreshTokenByEmail(email);
