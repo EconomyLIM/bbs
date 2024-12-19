@@ -34,18 +34,17 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	//test 롬복 사용
+	//test lombok
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
-	//Querydsl 추가
+	//Querydsl
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	// swagger
-	//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2' // 구버전
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
 	// spring security
@@ -53,18 +52,19 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// jwt
-	//JWT 의존성 추가
-//	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-//	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-//	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5' // runtime
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // for Jackson parser
 
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// unirest
+	implementation 'com.konghq:unirest-java:3.11.09'
+
+	// jasypt
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	systemProperty "jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password")
 }
