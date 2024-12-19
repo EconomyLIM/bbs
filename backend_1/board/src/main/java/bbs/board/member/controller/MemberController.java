@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "예제 API", description = "Swagger 테스트용 API")
+@Tag(name = "로그인 관련", description = "로그인 API")
 public class MemberController {
     private final LoginService loginService;
     private final MemberService memberService;

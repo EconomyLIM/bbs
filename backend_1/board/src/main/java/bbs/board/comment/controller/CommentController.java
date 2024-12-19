@@ -5,6 +5,7 @@ import bbs.board.auth.dto.AuthPrincipalMemberDTO;
 import bbs.board.common.dto.BasicResponse;
 import bbs.board.comment.dto.FindCommentByBoardRequest;
 import bbs.board.comment.service.CommentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "댓글 API", description = "댓글 CRUD API")
 public class CommentController {
     private final CommentService commentService;
 

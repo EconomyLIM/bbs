@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "예제 API", description = "Swagger 테스트용 API")
+@Tag(name = "게시판 API", description = "게시판 CRUD API")
 public class BoardController {
     private final BoardService boardService;
 

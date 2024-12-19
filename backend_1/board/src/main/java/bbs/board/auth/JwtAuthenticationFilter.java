@@ -62,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/login") || path.equals("/member/add");
+        return path.equals("/login") || path.equals("/member/add") || path.equals("/swagger-ui/index.html");
     }
 
     private void setJsonResponse(final HttpServletResponse response, final int scUnauthorized, final String message) throws IOException {

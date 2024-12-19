@@ -23,6 +23,7 @@ public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtFilter;
+    private final String [] requestWithoutPermission = {"/login", "/member/add", "/swagger-ui/**", "/v3/api-docs/**"};
 
     public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
@@ -38,7 +39,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/login", "/member/add").permitAll() // 인증 불필요
+                        requests.requestMatchers(requestWithoutPermission).permitAll() // 인증 불필요
                                 .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
