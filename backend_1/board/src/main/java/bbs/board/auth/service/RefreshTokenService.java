@@ -2,10 +2,10 @@ package bbs.board.auth.service;
 
 import bbs.board.auth.entity.RefreshToken;
 import bbs.board.auth.repository.RefreshTokenRepository;
-import bbs.board.domain.Member;
+import bbs.board.member.entity.Member;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
-import bbs.board.repository.MemberRepository;
+import bbs.board.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

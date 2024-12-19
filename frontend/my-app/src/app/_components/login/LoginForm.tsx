@@ -12,7 +12,6 @@ export default function LoginForm() {
         password: '',
     });
 
-
     const loginAPI = async () => {
 
         const loginResponse = await login(loginFormData);
@@ -23,6 +22,13 @@ export default function LoginForm() {
             router.push("/")
         }else{
             alert(loginResponse.message);
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 기본 동작 방지 (필요한 경우)
+            loginAPI();
         }
     };
 
@@ -61,6 +67,7 @@ export default function LoginForm() {
                             value={loginFormData.password}
                             onChange={handle}
                             className={"form-control"}
+                            onKeyDown={handleKeyDown}
                         />
                         <button type={"button"} onClick={loginAPI}>로그인</button>
                     </form>

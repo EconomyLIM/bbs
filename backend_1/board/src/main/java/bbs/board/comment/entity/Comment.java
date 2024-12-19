@@ -2,11 +2,11 @@ package bbs.board.comment.entity;
 
 import bbs.board.comment.dto.CommentRecommendationRequest;
 import bbs.board.comment.dto.CommentUpdateRequest;
-import bbs.board.domain.BaseEntity;
-import bbs.board.domain.Board;
-import bbs.board.domain.Member;
+import bbs.board.common.domain.BaseEntity;
+import bbs.board.board.entity.Board;
+import bbs.board.member.entity.Member;
 import bbs.board.comment.dto.SaveCommentRequest;
-import bbs.board.dto.common.RecommendationType;
+import bbs.board.common.RecommendationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

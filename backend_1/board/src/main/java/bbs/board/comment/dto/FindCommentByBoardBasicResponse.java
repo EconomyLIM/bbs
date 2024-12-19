@@ -1,7 +1,7 @@
 package bbs.board.comment.dto;
 
 import bbs.board.comment.entity.Comment;
-import bbs.board.dto.common.BasicResponse;
+import bbs.board.common.dto.BasicResponse;
 import lombok.Getter;
 
 import java.util.List;

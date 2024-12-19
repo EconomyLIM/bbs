@@ -1,7 +1,6 @@
 package bbs.board.auth;
 
-import bbs.board.dto.AuthPrincipalMemberDTO;
-import bbs.board.dto.MemberDTO;
+import bbs.board.auth.dto.AuthPrincipalMemberDTO;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
 import jakarta.servlet.FilterChain;

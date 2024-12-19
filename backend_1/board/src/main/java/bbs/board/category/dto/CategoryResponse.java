@@ -1,6 +1,6 @@
 package bbs.board.category.dto;
 
-import bbs.board.dto.common.BasicResponse;
+import bbs.board.common.dto.BasicResponse;
 import lombok.Getter;
 
 import java.util.List;

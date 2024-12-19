@@ -1,6 +1,8 @@
 package bbs.board.repository;
 
+import bbs.board.board.repository.BoardRepository;
 import bbs.board.comment.repository.CommentRepository;
+import bbs.board.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;

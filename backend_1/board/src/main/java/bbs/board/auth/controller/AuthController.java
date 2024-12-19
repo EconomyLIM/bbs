@@ -1,8 +1,8 @@
 package bbs.board.auth.controller;
 
 import bbs.board.auth.JwtTokenProvider;
-import bbs.board.dto.AuthPrincipalMemberDTO;
-import bbs.board.dto.common.BasicResponse;
+import bbs.board.auth.dto.AuthPrincipalMemberDTO;
+import bbs.board.common.dto.BasicResponse;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

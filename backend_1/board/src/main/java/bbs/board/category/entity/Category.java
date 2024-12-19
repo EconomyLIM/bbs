@@ -1,6 +1,6 @@
 package bbs.board.category.entity;
 
-import bbs.board.domain.Board;
+import bbs.board.board.entity.Board;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

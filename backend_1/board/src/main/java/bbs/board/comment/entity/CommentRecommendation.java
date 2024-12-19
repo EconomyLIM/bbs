@@ -1,7 +1,7 @@
 package bbs.board.comment.entity;
 
-import bbs.board.domain.Member;
-import bbs.board.dto.common.RecommendationType;
+import bbs.board.member.entity.Member;
+import bbs.board.common.RecommendationType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

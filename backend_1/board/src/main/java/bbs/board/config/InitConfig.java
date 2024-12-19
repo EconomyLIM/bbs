@@ -1,8 +1,8 @@
 package bbs.board.config;
 
 import bbs.board.category.repository.CategoryRepository;
-import bbs.board.service.BoardService;
-import bbs.board.service.LoginService;
+import bbs.board.board.service.BoardService;
+import bbs.board.auth.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

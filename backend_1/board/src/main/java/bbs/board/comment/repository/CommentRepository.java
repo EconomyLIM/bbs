@@ -1,7 +1,6 @@
 package bbs.board.comment.repository;
 
-import bbs.board.comment.entity.CommentRecommendation;
-import bbs.board.domain.Board;
+import bbs.board.board.entity.Board;
 import bbs.board.comment.entity.Comment;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

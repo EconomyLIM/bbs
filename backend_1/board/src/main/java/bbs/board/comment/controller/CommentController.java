@@ -1,9 +1,9 @@
 package bbs.board.comment.controller;
 
 import bbs.board.comment.dto.*;
-import bbs.board.dto.AuthPrincipalMemberDTO;
-import bbs.board.dto.common.BasicResponse;
-import bbs.board.dto.request.FindCommentByBoardRequest;
+import bbs.board.auth.dto.AuthPrincipalMemberDTO;
+import bbs.board.common.dto.BasicResponse;
+import bbs.board.comment.dto.FindCommentByBoardRequest;
 import bbs.board.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

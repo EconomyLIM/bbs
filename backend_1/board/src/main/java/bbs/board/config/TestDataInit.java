@@ -2,11 +2,11 @@ package bbs.board.config;
 
 import bbs.board.category.entity.Category;
 import bbs.board.category.repository.CategoryRepository;
-import bbs.board.domain.Member;
-import bbs.board.dto.MemberDTO;
-import bbs.board.dto.request.BoardRegisterRequestDTO;
-import bbs.board.service.BoardService;
-import bbs.board.service.LoginService;
+import bbs.board.member.entity.Member;
+import bbs.board.member.dto.MemberDTO;
+import bbs.board.board.dto.BoardRegisterRequestDTO;
+import bbs.board.board.service.BoardService;
+import bbs.board.auth.service.LoginService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

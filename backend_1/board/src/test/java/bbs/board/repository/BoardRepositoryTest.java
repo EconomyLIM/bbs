@@ -1,20 +1,18 @@
 package bbs.board.repository;
 
+import bbs.board.board.repository.BoardRepository;
 import bbs.board.category.entity.Category;
-import bbs.board.domain.Board;
-import bbs.board.domain.Member;
-import bbs.board.dto.BoardDTO;
+import bbs.board.board.entity.Board;
+import bbs.board.member.entity.Member;
+import bbs.board.board.dto.BoardDTO;
+import bbs.board.member.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest

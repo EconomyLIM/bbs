@@ -1,6 +1,6 @@
 package bbs.board.auth.entity;
 
-import bbs.board.domain.Member;
+import bbs.board.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

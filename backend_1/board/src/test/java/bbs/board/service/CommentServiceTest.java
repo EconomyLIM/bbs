@@ -1,12 +1,12 @@
 package bbs.board.service;
 
 import bbs.board.comment.service.CommentService;
-import bbs.board.domain.Board;
-import bbs.board.domain.Member;
-import bbs.board.dto.request.FindCommentByBoardRequest;
+import bbs.board.board.entity.Board;
+import bbs.board.member.entity.Member;
+import bbs.board.comment.dto.FindCommentByBoardRequest;
 import bbs.board.comment.dto.SaveCommentRequest;
-import bbs.board.repository.BoardRepository;
-import bbs.board.repository.MemberRepository;
+import bbs.board.board.repository.BoardRepository;
+import bbs.board.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -72,7 +72,7 @@ class CommentServiceTest {
         secondRequest.setBoardId(1L);
         secondRequest.setMemberEmail("test@test.com");
         secondRequest.setCommentContent("testContent2222222");
-        secondRequest.setParentComment(request);
+//        secondRequest.setParentComment(request);
         commentService.save(secondRequest);
 
         FindCommentByBoardRequest findRequest = new FindCommentByBoardRequest();

@@ -1,6 +1,6 @@
 package bbs.board.comment.dto;
 
-import bbs.board.dto.common.RecommendationType;
+import bbs.board.common.RecommendationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
