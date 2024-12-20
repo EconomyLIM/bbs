@@ -16,7 +16,6 @@ export default function LoginForm() {
 
         const loginResponse = await login(loginFormData);
         if (loginResponse.code === 'OK'){
-            console.log('token' + loginResponse.accessToken);
             localStorage.setItem("token", loginResponse.accessToken);
             alert("로그인 되었습니다.");
             router.push("/")

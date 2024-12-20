@@ -117,6 +117,12 @@ export function BoardList(){
                             ))}
                     </nav>
 
+                    <div className={"auth-buttons"} style={{background: "#f9f9f9"}}>
+                        <a href={"/board/new"} style={{float: "right", background: "#f9f9f9"}}>
+                          새로 작성하기
+                        </a>
+                    </div>
+
                     <div className="forum-search">
                         <input type="text" placeholder="Search" value={searchWord} onChange={(e) => {
                             onChangeSearchWord(e)
