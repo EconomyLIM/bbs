@@ -92,7 +92,7 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
 
         if (!findComment.getMember().getEmail().equals(request.getMemberEmail())){
-            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
         findComment.deleteComment();
@@ -104,7 +104,7 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
 
         if (!findComment.getMember().getEmail().equals(request.getMemberEmail())){
-            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
         findComment.update(request);

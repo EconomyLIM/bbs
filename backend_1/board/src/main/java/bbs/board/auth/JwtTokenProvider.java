@@ -56,14 +56,14 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             RefreshToken refreshToken = refreshTokenService.findRefreshTokenByEmail(email);
             if (refreshToken == null) {
-                throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+                throw new CustomException(ErrorCode.NO_PERMISSION);
             }
 
             refreshTokenService.verifyExpiration(refreshToken);
-            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         } catch (JwtException ex) {
             log.error("Invalid JWT token: {}", ex.getMessage());
-            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
     }
 

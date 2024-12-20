@@ -32,12 +32,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private String slackUrl;
+    private final String slackUrl;
 
     public GlobalExceptionHandler(final @Value("${slack.webhook.url}") String slackUrl) {
         this.slackUrl = slackUrl;
     }
 
+    /**
+     * 보안을 위한 200 Status 로 반환
+     */
     @ExceptionHandler(exception = CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(final CustomException e) {
         log.error(e.getMessage(), e);
@@ -97,6 +100,27 @@ public class GlobalExceptionHandler {
         int lineNumber = stackTraceElement.getLineNumber();
 
         // Slack 메시지 JSON 생성
+        String json = makeSlackMessage(e, className, methodName, lineNumber, httpMethod, requestUrl, queryString);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Request example = objectMapper.readValue(json, Request.class);
+
+            HttpResponse<Response> object = Unirest.post(slackUrl)
+                    .header("Content-Type", "application/json; charset=UTF-8")
+                    .body(example)
+                    .asObject(Response.class);
+
+            log.warn(object.getBody().toString());
+
+        }catch (JsonProcessingException ex){
+            log.error(ex.getMessage(), ex);
+        }
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
+
+    private static String makeSlackMessage(final Exception e, final String className, final String methodName, final int lineNumber, final String httpMethod, final String requestUrl, final String queryString) {
         String json = """
     {
         "text": "오류 알림기",
@@ -116,23 +140,9 @@ public class GlobalExceptionHandler {
                 requestUrl,     // 호출된 URL
                 queryString != null ? "?" + queryString : "" // 쿼리 문자열 (있을 경우 추가)
         );
-
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Request example = objectMapper.readValue(json, Request.class);
-
-            HttpResponse<Response> object = Unirest.post(slackUrl)
-                    .header("Content-Type", "application/json; charset=UTF-8")
-                    .body(example)
-                    .asObject(Response.class);
-
-        }catch (JsonProcessingException ex){
-            log.error(ex.getMessage(), ex);
-        }
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+        return json;
     }
+
     @Data
     static class Response{
         String code;

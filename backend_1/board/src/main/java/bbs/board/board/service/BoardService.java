@@ -78,7 +78,7 @@ public class BoardService {
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
 
         if (!findBoard.getMember().getEmail().equals(memberEmail)){
-            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
         findBoard.getMember().deletePoint();

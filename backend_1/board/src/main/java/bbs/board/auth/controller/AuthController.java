@@ -39,7 +39,7 @@ public class AuthController {
         if (isValid) {
             return ResponseEntity.ok(new BasicResponse());
         }else{
-            throw new CustomException(ErrorCode.INVALID_AUTHENTICATION);
+            throw new CustomException(ErrorCode.NO_PERMISSION);
         }
     }
 }
