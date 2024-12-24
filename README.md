@@ -16,7 +16,8 @@
 
 ### 백엔드
 - **Spring Boot 3.4.0**
-  - Gradle Build
+  - Gradle
+  - Spring Data JPA
   - Lombok
   - Spring Security 6
   - Swagger
