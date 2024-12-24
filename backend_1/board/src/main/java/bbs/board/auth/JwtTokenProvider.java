@@ -25,14 +25,17 @@ public class JwtTokenProvider {
 
     private final Key key;
     private final long tokenExpirationMs;
+    private final long refreshTokenValidity;
     private final RefreshTokenService refreshTokenService;
 
     public JwtTokenProvider(@Value("${app.auth.tokenSecret}") String tokenSecret,
                             @Value("${app.auth.tokenExpirationMs}") long tokenExpirationMs,
+                            @Value("${app.auth.refreshTokenExpirationMs}") long refreshTokenExpirationMs,
                             RefreshTokenService refreshTokenService) {
         this.tokenExpirationMs = tokenExpirationMs;
         this.key = Keys.hmacShaKeyFor(tokenSecret.getBytes(StandardCharsets.UTF_8));
         this.refreshTokenService = refreshTokenService;
+        this.refreshTokenValidity = refreshTokenExpirationMs;
     }
 
     public String createToken(String email, String nickname) {
@@ -84,5 +87,22 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return claims.get(keyName, String.class); // nickname 추출
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    public String createRefreshToken(String userId) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + refreshTokenValidity * 1000);
+
+        return Jwts.builder()
+                .setSubject("RefreshToken")
+                .claim("userId", userId)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 }

@@ -3,11 +3,13 @@ package bbs.board.auth;
 import bbs.board.auth.dto.AuthPrincipalMemberDTO;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
+import bbs.board.redis.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,10 +24,13 @@ import java.util.Collections;
  */
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtTokenProvider jwtTokenProvider;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider){
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RedisUtil redisUtil;
+
+    public JwtAuthenticationFilter(final JwtTokenProvider jwtTokenProvider, final RedisUtil redisUtil) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.redisUtil = redisUtil;
     }
 
     @Override
@@ -39,6 +44,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (token != null) {
                 String email = jwtTokenProvider.getEmailFromToken(token);
                 if (jwtTokenProvider.validateToken(token, email)) {
+
+                    if (redisUtil.isLogoutToken(token)) {
+                        // 이미 로그아웃(블랙리스트)된 토큰
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                        response.getWriter().write("redis filter");
+                        return;
+                    }
 
                     String nickname = jwtTokenProvider.getClaimFromToken("nickname", token);// ???
 
@@ -62,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/login") || path.equals("/member/add") || path.equals("/swagger-ui/index.html");
+        return path.equals("/login") || path.equals("/member/add") || path.equals("/swagger-ui/index.html")|| path.equals("/logout");
     }
 
     private void setJsonResponse(final HttpServletResponse response, final int scUnauthorized, final String message) throws IOException {

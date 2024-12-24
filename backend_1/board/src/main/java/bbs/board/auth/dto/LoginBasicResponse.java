@@ -17,18 +17,18 @@ public class LoginBasicResponse extends BasicResponse {
     private MemberDTO memberdto;
     private String accessToken;
     @Setter
-    private RefreshToken refreshToken;
+    private String refreshToken;
 
     private LoginBasicResponse() {
     }
 
-    public LoginBasicResponse(final Member member, final String accessToken, final RefreshToken refreshToken) {
+    public LoginBasicResponse(final Member member, final String accessToken, final String refreshToken) {
         this.memberdto = new MemberDTO(member);
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public static LoginBasicResponse of(final Member member, final String accessToken, final RefreshToken refreshToken) {
+    public static LoginBasicResponse of(final Member member, final String accessToken, final String refreshToken) {
         return new LoginBasicResponse(member, accessToken, refreshToken);
     }
 }

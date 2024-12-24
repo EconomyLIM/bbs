@@ -111,7 +111,7 @@ public class GlobalExceptionHandler {
                     .body(example)
                     .asObject(Response.class);
 
-            log.warn(object.getBody().toString());
+//            log.warn(object.getBody().toString());
 
         }catch (JsonProcessingException ex){
             log.error(ex.getMessage(), ex);

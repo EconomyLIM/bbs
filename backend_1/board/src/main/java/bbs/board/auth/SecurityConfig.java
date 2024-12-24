@@ -1,5 +1,6 @@
 package bbs.board.auth;
 
+import bbs.board.redis.RedisUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +24,11 @@ public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtFilter;
-    private final String [] requestWithoutPermission = {"/login", "/member/add", "/swagger-ui/**", "/v3/api-docs/**"};
+    private final String [] requestWithoutPermission = {"/login", "/logout", "/member/add", "/swagger-ui/**", "/v3/api-docs/**", "/board/search"};
 
-    public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+    public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CustomAuthenticationEntryPoint customAuthenticationEntryPoint, final RedisUtil redisUtil) {
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-        this.jwtFilter = new JwtAuthenticationFilter(jwtTokenProvider);
+        this.jwtFilter = new JwtAuthenticationFilter(jwtTokenProvider, redisUtil);
     }
 
     @Bean
@@ -47,6 +48,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
 //                .sessionManagement(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptions-> exceptions.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .logout(AbstractHttpConfigurer::disable // Spring Security의 기본 로그아웃 비활성화
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

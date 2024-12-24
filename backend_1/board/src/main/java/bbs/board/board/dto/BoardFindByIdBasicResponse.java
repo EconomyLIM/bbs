@@ -39,6 +39,5 @@ public class BoardFindByIdBasicResponse extends BasicResponse {
 
        return new BoardFindByIdBasicResponse(boardDTO);
     }
-
-
+    
 }

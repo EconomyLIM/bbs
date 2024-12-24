@@ -35,9 +35,5 @@ public class MemberController {
         return ResponseEntity.ok(new BasicResponse("OK", null));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginBasicResponse> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response){
-        LoginBasicResponse loginBasicResponse = loginService.login(loginDTO);
-        return ResponseEntity.ok(loginBasicResponse);
-    }
+
 }
