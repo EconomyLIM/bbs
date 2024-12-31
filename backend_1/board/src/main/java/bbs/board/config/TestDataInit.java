@@ -7,6 +7,7 @@ import bbs.board.member.dto.MemberDTO;
 import bbs.board.board.dto.BoardRegisterRequestDTO;
 import bbs.board.board.service.BoardService;
 import bbs.board.auth.service.LoginService;
+import bbs.board.member.service.MemberService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TestDataInit {
 
-    private final LoginService loginService;
+    private final MemberService memberService;
     private final CategoryRepository categoryRepository;
     private final BoardService boardService;
 
@@ -29,7 +30,7 @@ public class TestDataInit {
         Member member = new Member("test@test.com");
         MemberDTO memberDTO = new MemberDTO(member);
         memberDTO.setPassword(member.getPassword());
-        loginService.saveMember(memberDTO);
+        memberService.saveMember(memberDTO);
 
         Category topCategory1 = new Category("야구", 1);
         Category topCategory2 = new Category("축구", 1);

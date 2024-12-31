@@ -30,24 +30,6 @@ public class LoginService {
     private final RefreshTokenService refreshTokenService;
     private final RedisUtil redisUtil;
 
-    @Transactional
-    public void saveMember(MemberDTO memberDTO) {
-
-        // Todo
-        // @Valid 사용해서 validation check
-        // 이메일 중복 체크
-
-        // 비밀번호 정규표현식 사용해서 잘 만들었는지 체크
-
-        // 비밀번호 암호화
-        String encode = passwordEncoder.encode(memberDTO.getPassword());
-        memberDTO.setPassword(encode);
-
-
-        Member member = Member.newMemberWithMemberDTO(memberDTO);
-        memberRepository.save(member);
-    }
-
     public LoginBasicResponse login (LoginDTO loginDTO) {
 
         Member findMember = memberRepository.findByEmail(loginDTO.getEmail())

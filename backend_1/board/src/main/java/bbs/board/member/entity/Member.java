@@ -3,6 +3,7 @@ package bbs.board.member.entity;
 import bbs.board.member.dto.MemberDTO;
 import bbs.board.exception.CustomException;
 import bbs.board.exception.ErrorCode;
+import bbs.board.member.dto.MemberUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,5 +74,11 @@ public class Member {
 
     public void deletePoint(){
         this.point -= 5;
+    }
+
+    public void update(final MemberUpdateRequest request) {
+        this.nickname = request.getNickname();
+        this.username = request.getUsername();
+        this.password = request.getChangePassword();
     }
 }
