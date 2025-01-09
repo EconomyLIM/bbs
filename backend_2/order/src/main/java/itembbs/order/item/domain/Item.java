@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
+    @Getter
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "item_id")
     private Long id;
@@ -23,6 +24,7 @@ public class Item {
     private String itemName;
 
     private int price;
+    @Getter
     private int stock;
 
     public Item(final String itemName, final int price, final int stock) {
@@ -31,7 +33,12 @@ public class Item {
         this.stock = stock;
     }
 
-    public Long getId() {
-        return id;
+    public void decreaseStock(int stock) {
+        int afterStock = this.stock - stock;
+        if (afterStock < 0) {
+            throw new IllegalArgumentException("stock less than zero");
+        }
+        this.stock = afterStock;
     }
+
 }
