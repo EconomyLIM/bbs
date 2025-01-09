@@ -41,4 +41,13 @@ public class Item {
         this.stock = afterStock;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", itemName='" + itemName + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                '}';
+    }
 }

@@ -19,12 +19,12 @@ public class InitConfig {
 //    private final ItemRepository itemRepository;
 //    private final MemberRepository memberRepository;
 
-    @Bean
+//    @Bean
     public ItemInit itemInit(ItemRepository itemRepository) {
         return new ItemInit(itemRepository);
     }
 
-    @Bean
+//    @Bean
     public MemberInit memberInit(MemberRepository memberRepository) {
         return new MemberInit(memberRepository);
     }

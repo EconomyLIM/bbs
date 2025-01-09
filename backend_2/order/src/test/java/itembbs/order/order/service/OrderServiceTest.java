@@ -57,6 +57,13 @@ class OrderServiceTest {
 
         // then
         Assertions.assertThat(response.getOrderId()).isEqualTo(1L);
+
+
+        List<OrderDTO> list2 = new ArrayList<>();
+        list2.add(new OrderDTO(4L, 1000, 1));
+        list2.add(new OrderDTO(5L, 2000, 2));
+        OrderRequest orderRequest2 = new OrderRequest(new Address("city", "street", "zipcode"), list2);
+        OrderSaveResponse response2 = orderService.order(orderRequest2, new Member("test@test.com", "1234!"));
     }
 
     @Test

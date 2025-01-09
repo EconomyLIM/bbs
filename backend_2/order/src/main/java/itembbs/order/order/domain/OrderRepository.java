@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * created by     : 임경재
  * description    :
  */
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, OrderCustomRepository {
 }

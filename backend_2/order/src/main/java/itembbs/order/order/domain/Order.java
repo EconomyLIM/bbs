@@ -4,6 +4,7 @@ import itembbs.order.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Order {
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @BatchSize(size = 100)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -69,4 +71,16 @@ public class Order {
         delivery.setOrder(this);
     }
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", member=" + member +
+                ", orderItems=" + orderItems +
+                ", delivery=" + delivery +
+                ", orderStatus=" + orderStatus +
+                ", orderDate=" + orderDate +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

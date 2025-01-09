@@ -43,4 +43,14 @@ public class OrderItem {
         this.price = price;
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", item=" + item +
+                '}';
+    }
 }
