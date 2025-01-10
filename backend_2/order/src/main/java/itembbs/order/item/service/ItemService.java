@@ -5,6 +5,8 @@ import itembbs.order.item.domain.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * date           : 2025-01-03
  * created by     : 임경재
@@ -18,5 +20,9 @@ public class ItemService {
 
     public Long saveItem(Item item) {
         return itemRepository.save(item).getId();
+    }
+
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
     }
 }

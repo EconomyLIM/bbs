@@ -27,6 +27,9 @@ public class Item {
     @Getter
     private int stock;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private ItemCategory category;
+
     public Item(final String itemName, final int price, final int stock) {
         this.itemName = itemName;
         this.price = price;
