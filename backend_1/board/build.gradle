@@ -71,6 +71,8 @@ dependencies {
 	//prometheus
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 
+	// jsoup
+	implementation 'org.jsoup:jsoup:1.18.3'
 }
 
 tasks.named('test') {
