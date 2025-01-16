@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtFilter;
-    private final String [] requestWithoutPermission = {"/login", "/logout", "/member/add", "/swagger-ui/**", "/v3/api-docs/**", "/board/search", "/actuator/**"};
+    private final String [] requestWithoutPermission = {"/login", "/logout", "/member", "/swagger-ui/**", "/v3/api-docs/**", "/board/search", "/actuator/**", "/api/upload/**", "/api/files/**"};
 
     public SecurityConfig(final JwtTokenProvider jwtTokenProvider, final CustomAuthenticationEntryPoint customAuthenticationEntryPoint, final RedisUtil redisUtil) {
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;

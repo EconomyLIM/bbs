@@ -1,6 +1,7 @@
 package bbs.board.board.dto;
 
 import bbs.board.board.entity.Keyword;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +18,9 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class BoardRegisterRequestDTO {
 
-    @NotNull
+    @NotNull @NotEmpty
     private String title;
-    @NotNull
+    @NotNull @NotEmpty
     private String content;
     private String memberEmail;
     private String nickname;

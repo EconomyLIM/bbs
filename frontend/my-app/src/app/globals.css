@@ -73,6 +73,11 @@ main {
     margin-bottom: 1rem;
 }
 
+.post-container img {
+    max-height: 500px;
+    max-width: fit-content;
+}
+
 .post-category {
     display: inline-block;
     background: #eee;

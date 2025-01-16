@@ -11,7 +11,7 @@ import {
 } from "@/app/_type/comment/CommentRequestReponse";
 import {commentLiked, deleteComment, findCommentByBoard, saveComment, updateComment} from "@service/CommentService";
 import {useRouter} from "next/navigation";
-
+import DOMPurify from "dompurify";
 
 interface BoardDetailProps {
     id: string;
@@ -235,9 +235,10 @@ export function BoardDetail({ id }: BoardDetailProps) {
                     }
                     <div className="post-category">카테고리: {board.categoryName}</div>
                     <div className="post-meta">작성자: {board.nickname} | {board.registeredDate}</div>
-                    <div className="post-content">
-                        {board.content}
-                    </div>
+                    <div
+                        className="post-content"
+                        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(board.content)}}
+                    />
                     <div className="like-dislike" data-id="post" data-type="post">
                         <button className="like-btn" onClick={() => boardUpdateLikes(board.id, true)}>👍</button>
                         <span className="like-count">{board.likedCnt}</span>

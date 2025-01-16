@@ -22,6 +22,8 @@ import bbs.board.board.repository.BoardRecommendationRepository;
 import bbs.board.board.repository.BoardRepository;
 import bbs.board.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,9 @@ public class BoardService {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_USER_FOUND));
 
         findMember.addPoint();
+
+        String cleanContent = Jsoup.clean(boardRequestDTO.getContent(), Safelist.relaxed());
+        boardRequestDTO.setContent(cleanContent);
 
         Category findCategory = categoryRepository.findById(boardRequestDTO.getCategoryId())
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST));
