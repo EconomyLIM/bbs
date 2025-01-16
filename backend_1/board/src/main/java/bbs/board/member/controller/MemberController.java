@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/member/add")
+    @PostMapping("/member")
     public ResponseEntity<BasicResponse> addMember(@Valid @RequestBody MemberDTO memberDTO){
         BasicResponse response = memberService.saveMember(memberDTO);
         return ResponseEntity.ok(response);

@@ -23,10 +23,9 @@ export default function MemberAddForm() {
 
     const memberAddApi = async () => {
         const memberRegisterAPI = async (): Promise<ApiResponse> => {
-            return await requestApiFetch<ApiResponse>('POST', '/member/add', memberAddForm);
+            return await requestApiFetch<ApiResponse>('POST', '/member', memberAddForm);
         };
         const memberRegisterResponse = await memberRegisterAPI();
-
 
         if (memberRegisterResponse.code === 'OK'){
             alert("회원가입에 성공했습니다.");
